@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NÃO É SEU | Camisetas-Dossiê</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='20' y='45' width='60' height='30' rx='5' fill='%23d32f2f'/><circle cx='50' cy='30' r='20' fill='%23d32f2f'/><text x='50' y='38' font-family='Arial' font-size='30' font-weight='bold' text-anchor='middle' fill='white'>$</text></svg>">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Barlow Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            margin: 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .logo {
+            text-align: center;
+            margin: 15px 0 25px;
+            position: relative;
+        }
+        
+        .logo h1 {
+            font-size: 3rem;
+            color: #d32f2f;
+            margin: 0;
+            letter-spacing: -1px;
+            line-height: 1;
+            font-weight: 800;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .lock-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+        
+        .lock-icon::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #d32f2f;
+            border: 3px solid #d32f2f;
+        }
+        
+        .lock-icon::after {
+            content: "$";
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .sub-logo {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        /* Nav */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #d32f2f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        /* Produtos */
+        .produto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .produto-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .produto-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .produto-imagem {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .produto-info {
+            padding: 15px;
+        }
+        
+        .produto-titulo {
+            font-size: 1.3rem;
+            margin: 0 0 10px;
+            color: #d32f2f;
+            font-weight: 700;
+        }
+        
+        .produto-descricao {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .produto-variantes {
+            margin: 15px 0;
+        }
+        
+        .variante-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .variante-select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        
+        .produto-preco {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #333;
+            margin: 15px 0;
+        }
+        
+        .produto-botao {
+            width: 100%;
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .3s ease;
+        }
+        
+        .produto-botao:hover {
+            background-color: #b71c1c;
+        }
+        
+        /* Carrinho */
+        .carrinho-container {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .carrinho-container.aberto {
+            right: 0;
+        }
+        
+        .carrinho-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .carrinho-titulo {
+            font-size: 1.5rem;
+            margin: 0;
+            color: #d32f2f;
+        }
+        
+        .fechar-carrinho {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .carrinho-itens {
+            padding: 20px;
+        }
+        
+        .carrinho-item {
+            display: flex;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .carrinho-item-imagem {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+        
+        .carrinho-item-info {
+            flex: 1;
+        }
+        
+        .carrinho-item-titulo {
+            font-size: 1rem;
+            margin: 0 0 5px;
+        }
+        
+        .carrinho-item-variante {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 5px 0;
+        }
+        
+        .carrinho-item-preco {
+            font-weight: 700;
+            margin: 5px 0;
+        }
+        
+        .carrinho-item-quantidade {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .quantidade-btn {
+            background: #eee;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        
+        .quantidade-valor {
+            margin: 0 10px;
+        }
+        
+        .remover-item {
+            background: none;
+            border: none;
+            color: #d32f2f;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .carrinho-total {
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .total-linha {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .total-final {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #d32f2f;
+        }
+        
+        .finalizar-compra {
+            width: 100%;
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .carrinho-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        .carrinho-overlay.ativo {
+            display: block;
+        }
+        
+        /* Ícone do carrinho */
+        .carrinho-icone {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #d32f2f;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        
+        .carrinho-contador {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #fff;
+            color: #d32f2f;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 2px solid #d32f2f;
+        }
+        
+        /* Checkout */
+        .checkout-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .checkout-titulo {
+            color: #d32f2f;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .checkout-etapa {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .etapa-titulo {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .etapa-titulo span {
+            background: #d32f2f;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .pix-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        
+        .pix-titulo {
+            color: #32bcad;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        .pix-qrcode {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .pix-codigo {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            word-break: break-all;
+            margin-bottom: 20px;
+        }
+        
+        .pix-instrucoes {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .checkout-botao {
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+        
+        /* Banner */
+        .banner {
+            background: #d32f2f;
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .banner-titulo {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .banner-texto {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        /* Confirmação */
+        .confirmacao-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .confirmacao-icon {
+            font-size: 4rem;
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+        
+        .confirmacao-titulo {
+            color: #d32f2f;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .confirmacao-texto {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .confirmacao-detalhes {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .confirmacao-botao {
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        /* Rastreio */
+        .rastreio-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .rastreio-titulo {
+            color: #d32f2f;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .rastreio-status {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .status-item.ativo .status-icon {
+            background-color: #d32f2f;
+            color: white;
+        }
+        
+        .status-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .status-info {
+            flex: 1;
+        }
+        
+        .status-data {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Dashboard Admin */
+        .admin-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .admin-titulo {
+            color: #d32f2f;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-valor {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #d32f2f;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .admin-pedidos {
+            overflow-x: auto;
+        }
+        
+        .pedidos-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .pedidos-table th {
+            background: #d32f2f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .pedidos-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .pedidos-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-pago {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-producao {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+        
+        .status-enviado {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .status-entregue {
+            background-color: #f5f5f5;
+            color: #424242;
+        }
+        
+        /* Compartilhar Calculadora */
+        .share-container {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .share-titulo {
+            color: #2e7d32;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        .share-botoes {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .share-btn {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+        
+        .share-btn.whatsapp {
+            background: #25D366;
+        }
+        
+        .share-btn.facebook {
+            background: #1877F2;
+        }
+        
+        .share-btn.twitter {
+            background: #1DA1F2;
+        }
+        
+        .share-btn.link {
+            background: #1976d2;
+        }
+        
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .produto-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .carrinho-container {
+                width: 100%;
+                max-width: none;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+            }
+            
+            .checkout-container, .confirmacao-container, .rastreio-container, .admin-container {
+                padding: 20px;
+            }
+            
+            .share-botoes {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .share-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    
+/* Melhorias mobile */
+
+/* Garante espaçamento lateral no carrinho em telas pequenas */
+@media (max-width: 768px) {
+    .carrinho-container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+/* Ajuste de tamanho e posição do ícone do carrinho no mobile */
+@media (max-width: 480px) {
+    .carrinho-icone {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .carrinho-contador {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+        top: -4px;
+        right: -4px;
+    }
+}
+
+/* Garante botão fixo visível se necessário */
+.produto-botao {
+    scroll-margin-bottom: 100px;
+}
+
+</style>
+</head>
+<body>
+    <div class="nav-container">
+        <div class="logo">
+            <h1>
+                NÃO É SEU
+                <div class="lock-icon"></div>
+            </h1>
+            <p class="sub-logo">Seu dinheiro está trancado. Descubra quem tem a chave.</p>
+        </div>
+        <div class="nav-links">
+            <a href="/ferramenta">Calculadora</a>
+           
+            <a href="rastreio.html">Rastrear Pedido</a>
+            <a href="admin.html" style="display: none;">Admin</a>
+        </div>
+    </div>
+    
+    <!-- Banner -->
+    
+<div class="banner">
+    <div class="banner-content" style="max-width: 1200px; margin: 0 auto;">
+        <h2 class="banner-titulo" style="font-size: 2.5rem; margin-bottom: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">Leve a calculadora para as ruas!</h2>
+        <p class="banner-texto" style="font-size: 1.4rem; margin-bottom: 25px; font-weight: 600;">
+            Camisetas com QR Code que revelam quem lucra com seu consumo →
+        </p>
+        <button class="banner-botao" onclick="document.querySelector('.produto-grid').scrollIntoView({behavior: 'smooth'})" 
+                style="background: white; color: #d32f2f; border: none; padding: 12px 30px; font-size: 1.1rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+            VER CAMISETAS
+        </button>
+    </div>
+</div>
+    
+    <!-- Seção Compartilhar Calculadora -->
+    <div class="share-container">
+        <h3 class="share-titulo">📢 COMPARTILHE A CALCULADORA</h3>
+        <p>Ajude mais pessoas a descobrirem quanto do seu dinheiro vai para a dívida pública</p>
+        
+        <div class="share-botoes">
+            <button class="share-btn whatsapp" onclick="compartilharWhatsApp()">
+                <span>📱</span> WhatsApp
+            </button>
+            <button class="share-btn facebook" onclick="compartilharFacebook()">
+                <span>👍</span> Facebook
+            </button>
+            <button class="share-btn twitter" onclick="compartilharTwitter()">
+                <span>🐦</span> Twitter
+            </button>
+            <button class="share-btn link" onclick="copiarLink()">
+                <span>🔗</span> Copiar Link
+            </button>
+        </div>
+    </div>
+    
+    <!-- Produtos -->
+    <!-- Introdução Produtos -->
+<div class="produto-intro" style="text-align: center; margin: 50px auto; padding: 0 15px; max-width: 800px;">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 25px;">
+        <img src="https://via.placeholder.com/500x300/f5f5f5/d32f2f?text=Mockup+de+pessoa+escaneando+QR+Code" 
+             alt="Como funciona" 
+             style="width: 100%; max-width: 500px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        
+        <div>
+            <h3 style="font-size: 1.5rem; color: #d32f2f; margin-bottom: 15px; font-weight: 700;">
+                Todas as camisetas incluem um QR Code permanente nas costas
+            </h3>
+            <p style="font-size: 1.1rem; color: #333; line-height: 1.6;">
+                Aponte a câmera do celular e descubra em tempo real quanto do seu consumo vira dívida pública!<br>
+                <span style="font-weight: 600; color: #d32f2f;">Vista sua indignação e espalhe essa informação.</span>
+            </p>
+        </div>
+    </div>
+</div>
+    <div class="produto-grid"></div>
+        
+        <!-- Produto 2 -->
+        <div class="produto-card">
+            <img src="https://via.placeholder.com/400x500/ffffff/d32f2f?text=Camiseta+Auditoria" alt="Camiseta Auditoria" class="produto-imagem">
+            <div class="produto-info">
+                <h3 class="produto-titulo">Camiseta Auditoria</h3>
+                <p class="produto-descricao">
+                    🔹 Frente: "Auditoria Já!"<br>
+                    🔹 Costas: "1,2 trilhão para bancos em 2023"
+                </p>
+                
+                <div class="produto-variantes">
+                    <label class="variante-label">Tamanho:</label>
+                    <select class="variante-select" id="tamanho-2">
+                        <option value="P">Pequeno (P)</option>
+                        <option value="M" selected>Médio (M)</option>
+                        <option value="G">Grande (G)</option>
+                        <option value="GG">Extra Grande (GG)</option>
+                    </select>
+                    
+                    <label class="variante-label">Cor:</label>
+                    <select class="variante-select" id="cor-2">
+                        <option value="preta" selected>Preta</option>
+                        <option value="branca">Branca</option>
+                        <option value="vermelha">Vermelha</option>
+                    </select>
+                </div>
+                
+                <div class="produto-preco">R$ 79,90</div>
+                <button class="produto-botao" onclick="adicionarAoCarrinho(2, event)">ADICIONAR AO CARRINHO</button>
+            </div>
+        </div>
+        
+        <!-- Produto 3 -->
+        <div class="produto-card">
+            <img src="https://via.placeholder.com/400x500/ffffff/d32f2f?text=Camiseta+Transparência" alt="Camiseta Transparência" class="produto-imagem">
+            <div class="produto-info">
+                <h3 class="produto-titulo">Camiseta Transparência</h3>
+                <p class="produto-descricao">
+                    🔹 Frente: "Onde está meu dinheiro?"<br>
+                    🔹 Costas: Infográfico da dívida pública
+                </p>
+                
+                <div class="produto-variantes">
+                    <label class="variante-label">Tamanho:</label>
+                    <select class="variante-select" id="tamanho-3">
+                        <option value="P">Pequeno (P)</option>
+                        <option value="M" selected>Médio (M)</option>
+                        <option value="G">Grande (G)</option>
+                        <option value="GG">Extra Grande (GG)</option>
+                    </select>
+                    
+                    <label class="variante-label">Cor:</label>
+                    <select class="variante-select" id="cor-3">
+                        <option value="preta" selected>Preta</option>
+                        <option value="branca">Branca</option>
+                        <option value="vermelha">Vermelha</option>
+                    </select>
+                </div>
+                
+                <div class="produto-preco">R$ 79,90</div>
+                <button class="produto-botao" onclick="adicionarAoCarrinho(3, event)">ADICIONAR AO CARRINHO</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Carrinho -->
+    <div class="carrinho-overlay" id="carrinhoOverlay"></div>
+    
+    <div class="carrinho-container" id="carrinhoContainer">
+        <div class="carrinho-header">
+            <h3 class="carrinho-titulo">SEU CARRINHO</h3>
+            <button class="fechar-carrinho" onclick="fecharCarrinho()">×</button>
+        </div>
+        
+        <div class="carrinho-itens" id="carrinhoItens">
+            <!-- Itens serão adicionados dinamicamente aqui -->
+            <p style="text-align: center; padding: 20px;">Seu carrinho está vazio</p>
+        </div>
+        
+        <div class="carrinho-total">
+            <div class="total-linha">
+                <span>Subtotal:</span>
+                <span id="subtotal">R$ 0,00</span>
+            </div>
+            <div class="total-linha">
+                <span>Frete:</span>
+                <span id="frete">R$ 0,00</span>
+            </div>
+            <div class="total-linha total-final">
+                <span>Total:</span>
+                <span id="total">R$ 0,00</span>
+            </div>
+            
+            <button class="finalizar-compra" onclick="abrirCheckout()">FINALIZAR COMPRA</button>
+        </div>
+    </div>
+    
+    <!-- Ícone do carrinho -->
+    <div class="carrinho-icone" onclick="abrirCarrinho()">
+        🛒
+        <div class="carrinho-contador" id="carrinhoContador">0</div>
+    </div>
+    
+    <!-- Checkout (inicialmente oculto) -->
+    <div id="checkout" style="display: none;">
+        <div class="checkout-container">
+            <h2 class="checkout-titulo">FINALIZAR COMPRA</h2>
+            
+            <div class="checkout-etapa">
+                <h3 class="etapa-titulo"><span>1</span> Dados Pessoais</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Nome completo</label>
+                    <input type="text" class="form-input" id="nome" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">E-mail</label>
+                    <input type="email" class="form-input" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Telefone</label>
+                    <input type="tel" class="form-input" id="telefone" required>
+                </div>
+            </div>
+            
+            <div class="checkout-etapa">
+                <h3 class="etapa-titulo"><span>2</span> Endereço de Entrega</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">CEP</label>
+                    <input type="text" class="form-input" id="cep" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Endereço</label>
+                    <input type="text" class="form-input" id="endereco" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Número</label>
+                    <input type="text" class="form-input" id="numero" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Complemento</label>
+                    <input type="text" class="form-input" id="complemento">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Bairro</label>
+                    <input type="text" class="form-input" id="bairro" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Cidade</label>
+                    <input type="text" class="form-input" id="cidade" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Estado</label>
+                    <select class="form-input" id="estado" required>
+                        <option value="">Selecione</option>
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="checkout-etapa">
+                <h3 class="etapa-titulo"><span>3</span> Pagamento via PIX</h3>
+                
+                <div class="pix-container">
+                    <h4 class="pix-titulo">PAGAMENTO POR PIX</h4>
+                    <div class="pix-qrcode">
+                        <!-- QR Code será gerado aqui -->
+                        <img src="https://via.placeholder.com/200x200/ffffff/32bcad?text=QR+CODE" alt="QR Code PIX" style="width:100%;height:100%;">
+                    </div>
+                    
+                    <div class="pix-codigo" id="pixCodigo">
+                        00020126580014BR.GOV.BCB.PIX0136123e4567-e12b-12d1-a456-4266554400005204000053039865405100.005802BR5913NÃOÉSEU LOJA6008BRASILIA62070503***6304A1B2
+                    </div>
+                    
+                    <p class="pix-instrucoes">
+                        <strong>Instruções:</strong><br>
+                        1. Abra seu app de banco e selecione pagar com PIX<br>
+                        2. Escaneie o QR Code ou copie o código<br>
+                        3. Confira os dados e finalize o pagamento<br>
+                        4. Você receberá um e-mail com a confirmação
+                    </p>
+                </div>
+            </div>
+            
+            <button class="checkout-botao" onclick="finalizarCompra()">CONFIRMAR PEDIDO</button>
+        </div>
+    </div>
+    
+    <!-- Confirmação (inicialmente oculta) -->
+    <div id="confirmacao" style="display: none;">
+        <div class="confirmacao-container">
+            <div class="confirmacao-icon">✓</div>
+            <h2 class="confirmacao-titulo">PEDIDO CONFIRMADO!</h2>
+            <p class="confirmacao-texto">
+                Seu pagamento foi aprovado e sua camiseta já está em produção.<br>
+                Enviamos os detalhes para <strong id="confirmacao-email"></strong>.
+            </p>
+            
+            <div class="confirmacao-detalhes">
+                <h3>Detalhes do Pedido</h3>
+                <p><strong>Número do pedido:</strong> <span id="confirmacao-pedido"></span></p>
+                <p><strong>Previsão de entrega:</strong> 7-10 dias úteis</p>
+                <p><strong>Status de produção:</strong> Em processamento</p>
+                <p><strong>Código de rastreio:</strong> <span id="confirmacao-rastreio"></span> (disponível em 24h)</p>
+            </div>
+            
+            <button class="confirmacao-botao" onclick="window.location.href='rastreio.html?id=' + document.getElementById('confirmacao-pedido').textContent">ACOMPANHAR PEDIDO</button>
+        </div>
+    </div>
+    
+    <!-- Rastreio (inicialmente oculto) -->
+    <div id="rastreio" style="display: none;">
+        <div class="rastreio-container">
+            <h2 class="rastreio-titulo">ACOMPANHAR PEDIDO</h2>
+            
+            <div class="rastreio-status">
+                <div class="status-item ativo">
+                    <div class="status-icon">1</div>
+                    <div class="status-info">
+                        <strong>Pedido Recebido</strong>
+                        <div class="status-data">Hoje, 10:30</div>
+                        <p>Seu pagamento foi confirmado e o pedido enviado para produção</p>
+                    </div>
+                </div>
+                
+                <div class="status-item">
+                    <div class="status-icon">2</div>
+                    <div class="status-info">
+                        <strong>Em Produção</strong>
+                        <div class="status-data">Previsão: amanhã</div>
+                        <p>Sua camiseta está sendo impressa e preparada</p>
+                    </div>
+                </div>
+                
+                <div class="status-item">
+                    <div class="status-icon">3</div>
+                    <div class="status-info">
+                        <strong>Enviado</strong>
+                        <div class="status-data">Previsão: 2 dias</div>
+                        <p>Aguardando código de rastreio</p>
+                    </div>
+                </div>
+                
+                <div class="status-item">
+                    <div class="status-icon">4</div>
+                    <div class="status-info">
+                        <strong>Entregue</strong>
+                        <div class="status-data">Previsão: 7-10 dias úteis</div>
+                        <p>Sua camiseta estará a caminho</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="confirmacao-botao" onclick="window.location.href='loja.html'">VOLTAR À LOJA</button>
+        </div>
+    </div>
+    
+    <!-- Dashboard Admin (inicialmente oculto) -->
+    <div id="admin" style="display: none;">
+        <div class="admin-container">
+            <h2 class="admin-titulo">PAINEL ADMINISTRATIVO</h2>
+            
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-label">Pedidos Hoje</div>
+                    <div class="stat-valor">12</div>
+                    <div class="stat-label">+20% em relação a ontem</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Faturamento</div>
+                    <div class="stat-valor">R$ 1.458,80</div>
+                    <div class="stat-label">+15% na semana</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Em Produção</div>
+                    <div class="stat-valor">8</div>
+                    <div class="stat-label">Aguardando envio</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Taxa de Conversão</div>
+                    <div class="stat-valor">3.2%</div>
+                    <div class="stat-label">Visitantes para compradores</div>
+                </div>
+            </div>
+            
+            <div class="admin-pedidos">
+                <h3>Últimos Pedidos</h3>
+                <table class="pedidos-table">
+                    <thead>
+                        <tr>
+                            <th>Nº Pedido</th>
+                            <th>Cliente</th>
+                            <th>Data</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>NSEU-58742</td>
+                            <td>João Silva</td>
+                            <td>10/05/2023</td>
+                            <td>R$ 159,80</td>
+                            <td><span class="status-badge status-enviado">Enviado</span></td>
+                            <td><button class="produto-botao" style="padding: 5px 10px; font-size: 0.8rem;">Detalhes</button></td>
+                        </tr>
+                        <tr>
+                            <td>NSEU-58741</td>
+                            <td>Maria Souza</td>
+                            <td>10/05/2023</td>
+                            <td>R$ 79,90</td>
+                            <td><span class="status-badge status-producao">Produção</span></td>
+                            <td><button class="produto-botao" style="padding: 5px 10px; font-size: 0.8rem;">Detalhes</button></td>
+                        </tr>
+                        <tr>
+                            <td>NSEU-58740</td>
+                            <td>Carlos Oliveira</td>
+                            <td>09/05/2023</td>
+                            <td>R$ 239,70</td>
+                            <td><span class="status-badge status-pago">Pago</span></td>
+                            <td><button class="produto-botao" style="padding: 5px 10px; font-size: 0.8rem;">Detalhes</button></td>
+                        </tr>
+                        <tr>
+                            <td>NSEU-58739</td>
+                            <td>Ana Costa</td>
+                            <td>09/05/2023</td>
+                            <td>R$ 79,90</td>
+                            <td><span class="status-badge status-entregue">Entregue</span></td>
+                            <td><button class="produto-botao" style="padding: 5px 10px; font-size: 0.8rem;">Detalhes</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Dados dos produtos
+        const produtos = {};
+// Carrinho
+        let carrinho = [];
+        
+        // Funções do carrinho
+        function adicionarAoCarrinho(idProduto, event) {
+            event.preventDefault();
+            const produto = produtos[idProduto];
+            const tamanho = document.getElementById(`tamanho-${idProduto}`).value;
+            const cor = document.getElementById(`cor-${idProduto}`).value;
+            const variante = `${cor}-${tamanho}`;
+            
+            const itemExistente = carrinho.find(item => 
+                item.id === idProduto && item.variante === variante
+            );
+            
+            if (itemExistente) {
+                itemExistente.quantidade++;
+            } else {
+                carrinho.push({
+                    id: produto.id,
+                    nome: produto.nome,
+                    preco: produto.preco,
+                    imagem: produto.imagem,
+                    variante,
+                    tamanho,
+                    cor,
+                    quantidade: 1,
+                    design_frontal: produto.design_frontal,
+                    design_traseiro: produto.design_traseiro
+                });
+            }
+            
+            atualizarCarrinho();
+            abrirCarrinho();
+            
+            // Feedback visual
+            const botao = event.target;
+            botao.textContent = "✓ ADICIONADO";
+            setTimeout(() => {
+                botao.textContent = "ADICIONAR AO CARRINHO";
+            }, 2000);
+        }
+        
+        function removerDoCarrinho(idProduto, variante) {
+            const index = carrinho.findIndex(item => 
+                item.id === idProduto && item.variante === variante
+            );
+            
+            if (index !== -1) {
+                carrinho.splice(index, 1);
+                atualizarCarrinho();
+            }
+        }
+        
+        function atualizarQuantidade(idProduto, variante, novaQuantidade) {
+            const item = carrinho.find(item => 
+                item.id === idProduto && item.variante === variante
+            );
+            
+            if (item && novaQuantidade > 0) {
+                item.quantidade = novaQuantidade;
+                atualizarCarrinho();
+            } else if (item && novaQuantidade <= 0) {
+                removerDoCarrinho(idProduto, variante);
+            }
+        }
+        
+        function atualizarCarrinho() {
+            const carrinhoItens = document.getElementById('carrinhoItens');
+            const carrinhoContador = document.getElementById('carrinhoContador');
+            const subtotalElement = document.getElementById('subtotal');
+            const freteElement = document.getElementById('frete');
+            const totalElement = document.getElementById('total');
+            
+            // Atualizar contador
+            const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+            carrinhoContador.textContent = totalItens;
+            
+            // Atualizar lista de itens
+            if (carrinho.length === 0) {
+                carrinhoItens.innerHTML = '<p style="text-align: center; padding: 20px;">Seu carrinho está vazio</p>';
+            } else {
+                carrinhoItens.innerHTML = carrinho.map(item => `
+                    <div class="carrinho-item">
+                        <img src="${item.imagem}" alt="${item.nome}" class="carrinho-item-imagem">
+                        <div class="carrinho-item-info">
+                            <h4 class="carrinho-item-titulo">${item.nome}</h4>
+                            <div class="carrinho-item-variante">${item.cor.toUpperCase()} | Tamanho: ${item.tamanho}</div>
+                            <div class="carrinho-item-preco">R$ ${item.preco.toFixed(2)}</div>
+                            <div class="carrinho-item-quantidade">
+                                <button class="quantidade-btn" onclick="atualizarQuantidade(${item.id}, '${item.variante}', ${item.quantidade - 1})">-</button>
+                                <span class="quantidade-valor">${item.quantidade}</span>
+                                <button class="quantidade-btn" onclick="atualizarQuantidade(${item.id}, '${item.variante}', ${item.quantidade + 1})">+</button>
+                            </div>
+                            <button class="remover-item" onclick="removerDoCarrinho(${item.id}, '${item.variante}')">Remover</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Atualizar totais
+            const subtotal = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+            const frete = subtotal > 200 ? 0 : 15.90;
+            const total = subtotal + frete;
+            
+            subtotalElement.textContent = `R$ ${subtotal.toFixed(2)}`;
+            freteElement.textContent = `R$ ${frete.toFixed(2)}`;
+            totalElement.textContent = `R$ ${total.toFixed(2)}`;
+            
+            // Salvar carrinho no localStorage
+            localStorage.setItem('carrinhoNaoESeu', JSON.stringify(carrinho));
+        }
+        
+        // Funções de abertura/fechamento do carrinho
+        function abrirCarrinho() {
+            document.getElementById('carrinhoContainer').classList.add('aberto');
+            document.getElementById('carrinhoOverlay').classList.add('ativo');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function fecharCarrinho() {
+            document.getElementById('carrinhoContainer').classList.remove('aberto');
+            document.getElementById('carrinhoOverlay').classList.remove('ativo');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Funções do checkout
+        function abrirCheckout() {
+    // 1. Verifica se o carrinho está vazio
+    if (carrinho.length === 0) {
+        alert('Seu carrinho está vazio!');
+        return;
+    }
+
+    // 2. Fecha o carrinho
+    fecharCarrinho();
+
+    // 3. Esconde TODAS as seções da loja (exceto checkout)
+    const secoes = document.querySelectorAll('body > div');
+    secoes.forEach(div => {
+        if (!div.id.includes('checkout') && 
+            !div.classList.contains('nav-container') && 
+            !div.classList.contains('carrinho-overlay') &&
+            !div.classList.contains('carrinho-container')) {
+            div.style.display = 'none';
+        }
+    });
+
+    // 4. Mostra o formulário de pagamento
+    document.getElementById('checkout').style.display = 'block';
+
+    // 5. Rola para o topo da página
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+
+    // 6. Atualiza o valor do PIX (opcional)
+    const subtotal = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+    const frete = subtotal > 200 ? 0 : 15.90;
+    document.getElementById('pixCodigo').textContent = gerarCodigoPIX(subtotal + frete);
+}
+        
+        // Função para simular integração com POD
+        async function enviarParaPOD(dadosPedido) {
+            // Simulação de API - na prática, substitua por chamada real ao seu fornecedor POD
+            console.log("Enviando para produção POD:", dadosPedido);
+            
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve({
+                        sucesso: true,
+                        codigo_rastreio: 'POD' + Math.floor(Math.random() * 1000000000).toString().padStart(10, '0'),
+                        mensagem: 'Pedido aceito na linha de produção'
+                    });
+                }, 1500);
+            });
+        }
+        
+        // Função principal de finalização
+        async function finalizarCompra() {
+            // Validar formulário
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const telefone = document.getElementById('telefone').value;
+            const cep = document.getElementById('cep').value;
+            const endereco = document.getElementById('endereco').value;
+            const numero = document.getElementById('numero').value;
+            const cidade = document.getElementById('cidade').value;
+            const estado = document.getElementById('estado').value;
+            
+            if (!nome || !email || !telefone || !cep || !endereco || !numero || !cidade || !estado) {
+                alert('Por favor, preencha todos os campos obrigatórios!');
+                return;
+            }
+            
+            // Simular verificação de pagamento
+            try {
+                const pagamentoAprovado = await verificarPagamentoPIX();
+                
+                if (pagamentoAprovado) {
+                    // Preparar dados para POD
+                    const pedidoPOD = {
+                        numero_pedido: 'NSEU-' + Math.floor(Math.random() * 1000000),
+                        cliente: { nome, email, telefone },
+                        endereco: { cep, endereco, numero, cidade, estado },
+                        itens: carrinho.map(item => ({
+                            produto_id: item.id,
+                            nome: item.nome,
+                            variante: item.variante,
+                            quantidade: item.quantidade,
+                            design_frontal: item.design_frontal,
+                            design_traseiro: item.design_traseiro,
+                            preco_unitario: item.preco
+                        })),
+                        total: parseFloat(document.getElementById('total').textContent.replace('R$ ', ''))
+                    };
+                    
+                    // Enviar para produção
+                    const respostaPOD = await enviarParaPOD(pedidoPOD);
+                    
+                    if (respostaPOD.sucesso) {
+                        // Mostrar confirmação
+                        document.getElementById('confirmacao-pedido').textContent = pedidoPOD.numero_pedido;
+                        document.getElementById('confirmacao-email').textContent = email;
+                        document.getElementById('confirmacao-rastreio').textContent = respostaPOD.codigo_rastreio;
+                        
+                        // Limpar carrinho
+                        carrinho = [];
+                        localStorage.removeItem('carrinhoNaoESeu');
+                        atualizarCarrinho();
+                        
+                        // Mostrar tela de confirmação
+                        document.getElementById('checkout').style.display = 'none';
+                        document.getElementById('confirmacao').style.display = 'block';
+                        window.scrollTo(0, 0);
+                        
+                        // Simular envio de e-mail (na prática, enviar para seu backend)
+                        console.log("E-mail enviado para:", email);
+                    } else {
+                        throw new Error(respostaPOD.mensagem || "Falha ao enviar para produção");
+                    }
+                } else {
+                    alert("Pagamento não confirmado. Por favor, tente novamente.");
+                }
+            } catch (erro) {
+                console.error("Erro no processo:", erro);
+                alert("Ocorreu um erro: " + erro.message);
+            }
+        }
+        
+        // Funções auxiliares
+        function gerarCodigoPIX(valor) {
+            // Simulação - na prática use uma biblioteca como pix-js
+            const payload = {
+                chave: 'contato@naoeuseu.com.br',
+                beneficiario: 'NÃO É SEU LOJA',
+                cidade: 'BRASILIA',
+                valor: valor.toFixed(2),
+                txid: 'NSEU' + Date.now()
+            };
+            
+            // Simulando um payload PIX (formato simplificado)
+            return `00020126580014BR.GOV.BCB.PIX0136${payload.chave}520400005303986540${payload.valor}5802BR59${payload.beneficiario.substring(0,25)}60${payload.cidade.substring(0,15)}62070503***6304${Math.random().toString(16).substr(2,4).toUpperCase()}`;
+        }
+        
+        async function verificarPagamentoPIX() {
+            // Simulação - na prática consulte sua API de pagamento
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(true); // Simula pagamento aprovado
+                }, 2000);
+            });
+        }
+        
+        // Funções de compartilhamento
+        function compartilharWhatsApp() {
+            const texto = "Descubra quanto do seu dinheiro vai para bancos credores com a calculadora da dívida pública! #AuditoriaJá";
+            const url = "https://naoeuseu.com.br/calculadora";
+            window.open(`https://wa.me/?text=${encodeURIComponent(texto + ' ' + url)}`, '_blank');
+        }
+        
+        function compartilharFacebook() {
+            const url = "https://naoeuseu.com.br/calculadora";
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        }
+        
+        function compartilharTwitter() {
+            const texto = "Descubra quanto do seu dinheiro vai para bancos credores com a calculadora da dívida pública! #AuditoriaJá";
+            const url = "https://naoeuseu.com.br/calculadora";
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(texto)}&url=${encodeURIComponent(url)}`, '_blank');
+        }
+        
+        function copiarLink() {
+            const url = "https://naoeuseu.com.br/calculadora";
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Link copiado para a área de transferência!');
+            }).catch(err => {
+                console.error('Erro ao copiar:', err);
+                alert('Não foi possível copiar. Tente novamente.');
+            });
+        }
+        
+        // Carregar carrinho ao iniciar
+        function carregarCarrinho() {
+            const carrinhoSalvo = localStorage.getItem('carrinhoNaoESeu');
+            if (carrinhoSalvo) {
+                carrinho = JSON.parse(carrinhoSalvo);
+                atualizarCarrinho();
+            }
+        }
+        
+        // Máscaras e validações
+        function aplicarMascaras() {
+            // CEP
+            document.getElementById('cep').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                value = value.replace(/^(\d{5})(\d)/, '$1-$2');
+                e.target.value = value;
+                
+                // Simular busca de CEP (substitua por API real)
+                if (value.length === 9) {
+                    document.getElementById('endereco').value = 'Rua da Auditoria';
+                    document.getElementById('bairro').value = 'Centro';
+                    document.getElementById('cidade').value = 'Brasília';
+                    document.getElementById('estado').value = 'DF';
+                }
+            });
+            
+            // Telefone
+            document.getElementById('telefone').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) value = value.substring(0, 11);
+                
+                if (value.length <= 11) {
+                    value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+                    value = value.replace(/(\d)(\d{4})$/, '$1-$2');
+                }
+                
+                e.target.value = value;
+            });
+        }
+        
+        // Verificar se é página de rastreio
+        function verificarPaginaRastreio() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idPedido = urlParams.get('id');
+            
+            if (window.location.pathname.includes('rastreio.html') && idPedido) {
+                document.getElementById('rastreio').style.display = 'block';
+                document.querySelector('.nav-links a[href="loja.html"]').textContent = 'Voltar à Loja';
+            }
+        }
+        
+        // Verificar se é página admin
+        function verificarPaginaAdmin() {
+            if (window.location.pathname.includes('admin.html')) {
+                document.getElementById('admin').style.display = 'block';
+                document.querySelector('.nav-links a[href="admin.html"]').style.display = 'block';
+            }
+        }
+        
+        // Inicialização
+        
+async function carregarProdutos() {
+    try {
+        const resposta = await fetch('https://naoeuseu.com.br/api/produtos.json');
+        const lista = await resposta.json();
+
+        const container = document.querySelector('.produto-grid');
+        container.innerHTML = '';
+
+        lista.forEach(produto => {
+            const card = document.createElement('div');
+            card.className = 'produto-card';
+            card.innerHTML = `
+                <img src="${produto.imagem}" alt="${produto.nome}" class="produto-imagem">
+                <div class="produto-info">
+                    <h3 class="produto-titulo">${produto.nome}</h3>
+                    <p class="produto-descricao">${produto.descricao || 'Design exclusivo nas costas e frente.'}</p>
+                    <div class="produto-variantes">
+                        <label class="variante-label">Tamanho:</label>
+                        <select class="variante-select" id="tamanho-${produto.id}">
+                            ${produto.tamanhos.map(t => `<option value="${t}" ${t === 'M' ? 'selected' : ''}>${t}</option>`).join('')}
+                        </select>
+                        <label class="variante-label">Cor:</label>
+                        <select class="variante-select" id="cor-${produto.id}">
+                            ${produto.cores.map(c => `<option value="${c}" ${c === 'preta' ? 'selected' : ''}>${c}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="produto-preco">R$ ${produto.preco.toFixed(2)}</div>
+                    <button class="produto-botao" onclick="adicionarAoCarrinho(${produto.id}, event)">ADICIONAR AO CARRINHO</button>
+                </div>
+            `;
+            container.appendChild(card);
+            produtos[produto.id] = produto;
+        });
+    } catch (erro) {
+        console.error("Erro ao carregar produtos:", erro);
+        const container = document.querySelector('.produto-grid');
+        container.innerHTML = '<p style="text-align:center; padding: 20px;">Não foi possível carregar os produtos. Tente novamente mais tarde.</p>';
+    }
+}
+
+
+        window.addEventListener('DOMContentLoaded', function() {
+            carregarProdutos();
+            carregarCarrinho();
+            aplicarMascaras();
+            verificarPaginaRastreio();
+            verificarPaginaAdmin();
+        });
+    </script>
+</body>
+</html>
