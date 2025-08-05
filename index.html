@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NÃO É SEU | Seu dinheiro está trancado</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='20' y='45' width='60' height='30' rx='5' fill='%23d32f2f'/><circle cx='50' cy='30' r='20' fill='%23d32f2f'/><text x='50' y='38' font-family='Arial' font-size='30' font-weight='bold' text-anchor='middle' fill='white'>$</text></svg>">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Barlow Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            margin: 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .logo {
+            text-align: center;
+            margin: 15px 0 25px;
+            position: relative;
+        }
+        
+        .logo h1 {
+            font-size: 3rem;
+            color: #d32f2f;
+            margin: 0;
+            letter-spacing: -1px;
+            line-height: 1;
+            font-weight: 800;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .lock-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+        
+        .lock-icon::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #d32f2f;
+            border: 3px solid #d32f2f;
+        }
+        
+        .lock-icon::after {
+            content: "$";
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .sub-logo {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        .input-container {
+            background: #fff;
+            padding: 20px 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.1);
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .input-container label {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .profile-select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        
+        .input-container input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            -webkit-appearance: none;
+            font-family: inherit;
+        }
+        
+        .input-container button {
+            width: 100%;
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            padding: 16px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all .3s ease;
+        }
+        
+        .input-container button:hover {
+            background-color: #b71c1c;
+            transform: translateY(-2px);
+        }
+        
+        .error-message {
+            color: #d32f2f;
+            margin-top: 5px;
+            font-size: .9rem;
+            display: none;
+        }
+        
+        .results {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .comparison {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .benefit-box, .cost-box {
+            width: 100%;
+            padding: 18px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .benefit-box {
+            border-left: 5px solid #4caf50;
+        }
+        
+        .cost-box {
+            border-left: 5px solid #f44336;
+        }
+        
+        .box-title {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .box-value {
+            font-size: 1.8rem;
+            margin: 12px 0;
+            font-weight: 700;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 280px;
+            margin: 25px 0;
+            position: relative;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .chart-lock {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 30px;
+            height: 30px;
+            background-color: #d32f2f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            z-index: 10;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .badge {
+            background-color: #555;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: .8rem;
+            display: inline-block;
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .share-options {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .share-btn {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .copy-btn {
+            background: #1976d2;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Estilos do Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            overflow-y: auto;
+        }
+        
+        .modal > div {
+            background: #fff;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 25px;
+            border-radius: 10px;
+            position: relative;
+            overflow-y: auto;
+            max-height: 90vh;
+            width: 90%;
+            box-sizing: border-box;
+        }
+        
+        .modal button {
+            cursor: pointer;
+        }
+        
+        .modal h2 {
+            color: #d32f2f;
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+        
+        .modal h3 {
+            margin-top: 20px;
+            color: #333;
+            font-size: 1.4rem;
+        }
+        
+        .destaque-formula {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #d32f2f;
+        }
+        
+        .destaque-valores {
+            background: #e8f5e9;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        
+        .versao-tecnica {
+            font-size: 0.95rem;
+        }
+        
+        .modal table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .modal th {
+            background: #d32f2f;
+            color: #fff;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .modal td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Novos estilos para a seção SOBRE */
+        .sobre-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .sobre-container h1 {
+            color: #d32f2f;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+
+        .sobre-container p.destaque {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .sobre-container .cta {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .sobre-container button {
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .sobre-container button:hover {
+            background-color: #b71c1c;
+            transform: translateY(-2px);
+        }
+
+        /* Estilo para o alerta de impacto */
+        .alert-impacto {
+            background: #fff8e1;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .alert-impacto img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .alert-impacto p {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .alert-impacto strong {
+            color: #d32f2f;
+        }
+
+        /* Menu de navegação */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #d32f2f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Dado impactante */
+        .dado-impactante {
+            background: #ffe6e6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .dado-impactante p {
+            font-size: 1.3rem;
+            margin: 0;
+            font-weight: 700;
+            color: #d32f2f;
+        }
+
+        .dado-impactante span {
+            font-size: 1.5rem;
+        }
+
+        .dado-impactante small {
+            font-size: 0.9rem;
+            margin: 5px 0 0;
+            color: #666;
+            display: block;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 2.5rem;
+            }
+            
+            .modal > div {
+                margin: 10px auto;
+                padding: 20px;
+                width: 95%;
+            }
+            
+            .modal h2 {
+                font-size: 1.5rem;
+            }
+            
+            .modal h3 {
+                font-size: 1.2rem;
+            }
+            
+            .destaque-formula {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links {
+                margin-top: 15px;
+            }
+
+            .dado-impactante p {
+                font-size: 1.1rem;
+            }
+
+            .dado-impactante span {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            body {
+                padding: 30px;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            .comparison {
+                flex-direction: row;
+            }
+            
+            .logo h1 {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-container">
+        <div class="logo">
+            <h1>
+                NÃO É SEU
+                <div class="lock-icon"></div>
+            </h1>
+            <p class="sub-logo">Seu dinheiro está trancado. Descubra quem tem a chave.</p>
+        </div>
+        <div class="nav-links">
+            <a href="#" onclick="abrirSobre()">Sobre</a>
+            <a href="#" onclick="abrirModalContato()">Contato</a>
+        </div>
+    </div>
+    
+    <!-- Página principal (calculadora) -->
+    <div id="pagina-principal">
+        <div class="input-container">
+            <label>Quanto você gasta por mês?</label>
+            <select id="perfil-consumo" class="profile-select">
+                <option value="0.35">Consumidor padrão (35% de tributos)</option>
+                <option value="0.40">Alta renda (40% de tributos)</option>
+                <option value="0.28">Baixa renda (28% de tributos)</option>
+            </select>
+            <input type="number" id="consumo" placeholder="R$" min="1" inputmode="numeric">
+            <div id="error-message" class="error-message"></div>
+            <button id="calcular-btn">CALCULAR</button>
+        </div>
+        
+        <div id="results" class="results">
+            <div class="comparison">
+                <div class="benefit-box">
+                    <div class="box-title">✅ Seu dinheiro em serviços</div>
+                    <div class="box-value" id="servicos">R$ 0</div>
+                    <div>Saúde: <span id="saude">R$ 0</span></div>
+                    <div>Educação: <span id="educacao">R$ 0</span></div>
+                </div>
+                
+                <div class="cost-box">
+                    <div class="box-title">💸 Para bancos credores</div>
+                    <div class="box-value" id="credores">R$ 0</div>
+                    <div>Juros: <span id="juros">R$ 0</span></div>
+                    <div>Amortizações: <span id="amortizacoes">R$ 0</span></div>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:40px;">
+              <p style="margin-bottom:15px;"><strong>🕰️ Como surgiu essa dívida pública?</strong></p>
+              <div style="display:inline-flex; gap:10px;">
+                <button onclick="abrirModalOrigemLeiga()" class="share-btn" style="font-size:1rem">👤 Versão simples</button>
+                <button onclick="abrirModalOrigemTecnica()" class="copy-btn" style="font-size:1rem">🧾 Versão técnica</button>
+              </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 style="text-align: center; color: #d32f2f; margin-bottom: 15px; font-weight: 700;">
+                    VISÃO GERAL: PARA ONDE VAI SEU DINHEIRO
+                </h3>
+                <div class="chart-lock">$</div>
+                <canvas id="chart"></canvas>
+            </div>            <!-- NOVA SEÇÃO: VALOR ANUAL DA DÍVIDA -->
+            <div style="background:#f8f9fa; padding:15px; border-radius:8px; margin-top:20px; text-align:center;">
+                <p style="margin:0; font-weight:600;">
+                    Seu consumo anual direciona aproximadamente<br>
+                    <span style="color:#d32f2f; font-size:1.2rem; font-weight:800;" id="valorAnualDP">R$ 0</span> 
+                    para a dívida pública.
+                </p>
+            </div>
+
+            <!-- COMPARAÇÃO MACRO -->
+            <div class="dado-impactante">
+                <p>
+                    Em 2023, <span>R$ 1,2 TRILHÃO</span> do orçamento federal<br>
+                    foi para pagar juros e amortizações da dívida.
+                </p>
+                <small>Fonte: Tesouro Nacional (2024) | Equivalente a <strong>6x o orçamento da saúde</strong></small>
+            </div>
+            
+            <div style="background:white;padding:20px;border-radius:10px;margin-top:20px">
+                <h3 style="color:#d32f2f;text-align:center;margin-top:0">📊 COMO CHEGAMOS A ESSE NÚMERO?</h3>
+                
+                <div style="margin:20px 0;font-size:1.1rem">
+                    <p><strong>Fórmula simplificada:</strong></p>
+                    <ol style="padding-left:20px">
+                        <li style="margin-bottom:10px">Em média, <strong>35% do que você consome</strong> vira tributo</li>
+                        <li style="margin-bottom:10px">Do total arrecadado, <strong>46.3% vai para a dívida pública</strong></li>
+                        <li>Resultado: parte do seu dinheiro vira <strong>lucro garantido para bancos e rentistas (pessoas que vivem de juros)</strong></li>
+                    </ol>
+                    <p style="font-style:italic;color:#666">✋ Valores podem variar por tipo de produto/serviço.</p>
+                </div>
+                
+                <div style="background:#f8f9fa;padding:15px;border-radius:8px;margin:20px 0">
+                    <h4 style="margin-top:0;color:#333">📚 QUER ENTENDER MELHOR?</h4>
+                    <ul style="padding-left:20px">
+                        <li style="margin-bottom:8px"><a href="#" onclick="abrirGuiaRapido(); return false;" style="color:#1976d2;text-decoration:none">Guia rápido: "Como essa dívida funciona"</a></li>
+                        <li style="margin-bottom:8px"><a href="#" onclick="abrirMetodologia(); return false;" style="color:#1976d2;text-decoration:none">📝 Entenda a metodologia</a></li>
+                        <li style="margin-bottom:8px"><a href="#" onclick="gerarPlanilha(); return false;" style="color:#1976d2;text-decoration:none">📊 Baixar dados brutos (Excel com fórmulas)</a></li>
+                        <!--
+                        <li><a href="#" style="color:#1976d2;text-decoration:none">Live com especialista: tire dúvidas</a></li>
+                        -->
+                    </ul>
+                </div>
+
+                <!-- NOVA SEÇÃO: IMPACTO NACIONAL -->
+                <div class="alert-impacto" style="margin-top:30px;">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyLDEzQTEuNSwxLjUgMCwwLDAgMTMuNSwxMS41QTEuNSwxLjUgMCwwLDAgMTIsMTBBMS41LDEuNSAwIDAsMCAxMC41LDExLjVBMS41LDEuNSAwIDAsMCAxMiwxM00xOCw4QTEuNSwxLjUgMCwwLDAgMTkuNSw2LjVBMS41LDEuNSAwIDAsMCAxOCw1QTEuNSwxLjUgMCAwLDAgMTYuNSw2LjVBMS41LDEuNSAwIDAsMCAxOCw4TTYsOEEyLDIgMCAwLDEgOCw2SDkuNUExLjUsMS41IDAsMCwxIDExLDcuNVY4QTIuNSwyLjUgMCAwLDEgOC41LDEwLjVIOEEyLDIsMCAwLDEgNiw4TTE5LDE5SDVWNUgxOVYxOU0xOSwzSDVBMSwxIDAgMCwwIDQsNFYyMEExLDEgMCAwLDAgNSwyMUgxOUExLDEgMCAwLDAgMjAsMjBWNEExLDEgMCAwLDAgMTksM1oiIC8+PC9zdmc+" alt="Cadeado">
+                    <p style="margin:0;">
+                        <strong>Isso significa que, no Brasil:</strong><br>
+                        • A cada <strong>1 minuto</strong>, R$ 2,3 milhões vão para credores<br>
+                        • Enquanto faltam leitos em UTIs e professores nas escolas
+                    </p>
+                </div>
+                
+                <div style="text-align:center;margin:25px 0">
+                    <button onclick="abrirModalEngajamento()" style="background:#d32f2f; color:#fff; border:none; padding:12px 20px; border-radius:8px; margin-top:15px; font-weight:600; cursor:pointer;">
+                        ✋ CHEGA! Quero saber como mudar isso
+                    </button>
+                </div>
+                
+                <div style="text-align:center;margin:25px 0">
+                    <h4 style="margin-bottom:15px">📢 LEVE A CALCULADORA PARA AS RUAS!</h4>
+                    <p style="margin-bottom:15px">Nossas camisetas têm um <strong>QR Code permanente</strong> que revela em tempo real:</p>
+                    <p>🔹 <strong>Quem lucra</strong> com seu consumo</p>
+                    <p>🔹 <strong>Quanto vai</strong> para a dívida pública</p>
+                    <button 
+  onclick="window.location.href='/loja'" 
+  style="background:#d32f2f;color:#fff;border:none;padding:12px 20px;border-radius:8px;font-weight:700;margin-top:15px;cursor:pointer">
+  VER MODELOS COM QR CODE →
+</button>
+                </div>
+                
+                <div style="background:#e8f5e9;padding:15px;border-radius:8px;text-align:center">
+                    <h4 style="margin-top:0;color:#2e7d32">📢 VOCÊ SABIA DISSO?</h4>
+                    <p style="margin-bottom:10px;font-style:italic"<strong>Parte do que você consome vira lucro para bancos credores.</strong><br>
+        Descubra quanto é e compartilhe essa ferramenta:</p>
+                    <div class="share-options">
+                        <button onclick="compartilharWhatsApp()" class="share-btn">
+                            <span>📱</span> WhatsApp
+                        </button>
+                        <button onclick="copiarLink()" class="copy-btn">
+                            <span>🔗</span> Copiar link
+                        </button>
+                    </div>
+                    <p style="margin-top:10px;font-size:.9em;color:#666">#AuditoriaJá</p>
+                </div>
+            </div>
+            
+            <div class="badge">
+                Dados auditados: Auditoria Cidadã da Dívida (2024) 
+            </div>
+        </div>
+    </div>
+
+    <!-- Página Sobre (inicialmente oculta) -->
+    <div id="pagina-sobre" style="display:none;">
+        <div class="sobre-container">
+            <h1>Sobre a Ferramenta</h1>
+
+            <div class="dado-impactante">
+                <p>
+                    Em 2023, <span>R$ 1,2 TRILHÃO</span> do orçamento federal<br>
+                    foi para pagar juros e amortizações da dívida.
+                </p>
+                <small>Fonte: Tesouro Nacional (2024) | Equivalente a <strong>6x o orçamento da saúde</strong></small>
+            </div>
+
+            <p class="destaque">
+                Você trabalha, paga impostos e consome. Mas uma parte invisível do que você contribui desaparece todos os anos para alimentar uma dívida que você nunca contraiu.<br><br>
+
+                Esta ferramenta mostra, com precisão, quanto do seu dinheiro vai parar nas mãos de quem lucra com a dívida pública brasileira.<br><br>
+
+                Criamos esta calculadora para responder a uma pergunta simples: <strong>"Para onde vai o dinheiro do orçamento público?"</strong><br><br>
+
+                A resposta é chocante — e urgente.<br><br>
+
+                Todos os anos, mais de 40% do orçamento federal vai para o pagamento de juros e amortizações da dívida pública. Isso significa menos recursos para saúde, educação, transporte, saneamento e políticas públicas que você realmente usa.<br><br>
+
+                E mais: essa dívida nunca foi auditada de forma transparente. Ela cresce por meio de um mecanismo chamado rolagem da dívida, no qual o governo emite novos títulos para pagar os antigos — um ciclo silencioso que transfere bilhões da sociedade para rentistas, bancos e detentores do capital.<br><br>
+
+                <strong>Por que isso importa?</strong><br>
+                Porque enquanto você paga, eles lucram.<br>
+                Porque se não entendermos, não pressionamos.<br>
+                E porque a única forma de romper esse ciclo é com informação e mobilização.<br><br>
+
+                <strong>Quem somos</strong><br>
+                Somos uma iniciativa independente, sem vínculos com partidos ou grupos econômicos. Nossa motivação é simples: devolver ao cidadão o poder de fiscalizar, entender e transformar o orçamento público.<br><br>
+
+                Esta é uma ferramenta de educação orçamentária e mobilização cidadã. Quanto mais gente souber, mais difícil será manter essa estrutura invisível.<br><br>
+
+                <strong>O que queremos</strong><br>
+                • Transparência: uma auditoria cidadã da dívida pública, já.<br>
+                • Justiça orçamentária: o orçamento precisa servir à população, não aos credores.<br>
+                • Engajamento: transformar indignação em ação concreta.<br><br>
+
+                <em>Seu dinheiro está trancado. Descubra quem tem a chave.</em>
+            </p>
+            
+            <div class="cta">
+                <button onclick="abrirCalculadora()">Calcule Agora</button>
+                <button onclick="compartilhar()">Divulgar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Contato -->
+    <div id="modalContato" class="modal">
+      <div>
+        <button onclick="fecharModalContato()" style="position:absolute;top:10px;right:15px;background:none;border:none;font-size:1.5rem;color:#d32f2f">×</button>
+        
+        <h2 style="color:#d32f2f;margin-top:0">📬 Entre em Contato</h2>
+        
+        <div style="margin:20px 0">
+          <p style="font-size:1.1rem;margin-bottom:20px">
+            Tem dúvidas, sugestões ou quer colaborar com o projeto? Envie sua mensagem:
+          </p>
+          
+          <form id="formContato" style="display:grid;gap:15px">
+            <div>
+              <label for="nomeContato" style="display:block;margin-bottom:5px;font-weight:600">Seu Nome</label>
+              <input type="text" id="nomeContato" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px">
+            </div>
+            
+            <div>
+              <label for="emailContato" style="display:block;margin-bottom:5px;font-weight:600">Seu E-mail</label>
+              <input type="email" id="emailContato" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px">
+            </div>
+            
+            <div>
+              <label for="mensagemContato" style="display:block;margin-bottom:5px;font-weight:600">Mensagem</label>
+              <textarea id="mensagemContato" rows="5" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px"></textarea>
+            </div>
+            
+            <button type="submit" style="background:#d32f2f;color:#fff;border:none;padding:12px;border-radius:5px;font-weight:600;cursor:pointer">
+              Enviar Mensagem
+            </button>
+          </form>
+          
+          <div id="contatoSucesso" style="display:none;background:#e8f5e9;padding:15px;border-radius:5px;text-align:center;margin-top:15px">
+            <p style="margin:0;font-weight:600;color:#2e7d32">✅ Mensagem enviada com sucesso!</p>
+          </div>
+        </div>
+        
+        <div style="border-top:1px solid #eee;padding-top:20px">
+          <!--
+            <h3 style="margin-top:0">Outras formas de contato:</h3>
+          -->
+          <h3 style="margin-top:0">Contato:</h3>
+          <!--
+          <ul style="padding-left:20px;margin-bottom:20px">
+          -->
+          <ul style="padding-left:0px;margin-bottom:20px"></ul>    
+            <!--
+            <li style="margin-bottom:10px">
+            -->
+              <strong>E-mail:</strong> <a href="mailto:contato@naoeseu.org" style="color:#1976d2">contato@naoeseu.org</a>
+            <!--
+            </li>
+            -->
+            <!--
+            <li style="margin-bottom:10px">
+              <strong>Redes Sociais:</strong> 
+              <div style="display:flex;gap:10px;margin-top:5px">
+                <a href="#" style="color:#1976d2">Twitter/X</a> | 
+                <a href="#" style="color:#1976d2">Instagram</a> | 
+                <a href="#" style="color:#1976d2">Facebook</a>
+              </div>
+            </li>
+            -->
+            <!--
+            <li>
+              <strong>Parcerias:</strong> <a href="mailto:parcerias@naoeseu.org" style="color:#1976d2">parcerias@naoeseu.org</a>
+            </li>
+            -->
+          </ul>
+          <!--
+          <p style="font-size:0.9rem;color:#666">
+            <strong>Horário de atendimento:</strong> Segunda a sexta, das 9h às 18h.
+          </p>
+          -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Metodologia (original) -->
+    <div id="modalMetodologia" class="modal">
+      <div>
+        <button onclick="fecharModalMetodologia()" style="position:absolute;top:10px;right:15px;background:none;border:none;font-size:1.5rem;color:#d32f2f">×</button>
+        
+        <h2 style="color:#d32f2f;margin-top:0">🔍 Como calculamos os valores</h2>
+        
+        <!-- Versão Simplificada -->
+        <div id="versaoLeigaMetodologia">
+          <div class="destaque-formula">
+            <p style="font-weight:700;color:#d32f2f;margin-top:0">Fórmula usada:</p>
+            <p style="font-size:1.1rem;margin-bottom:0">
+              <strong>Seu dinheiro para credores = Consumo × Tributos × % da Dívida</strong>
+            </p>
+          </div>
+
+          <h3 style="color:#333;margin-top:20px">Veja como funciona na prática:</h3>
+          <p>Se você gasta <strong>R$ 1.000 por mês</strong> (consumo):</p>
+          
+          <ol>
+            <li><strong>Tributos embutidos</strong> (35% para consumidor padrão):
+              <br><span style="display:inline-block;margin-top:5px">R$ 1.000 × 35% = <strong>R$ 350</strong></span>
+            </li>
+            <li><strong>Parte que vai para a dívida</strong> (46,3% do orçamento federal):
+              <br><span style="display:inline-block;margin-top:5px">R$ 350 × 46,3% = <strong style="color:#d32f2f">R$ 162,05</strong></span>
+            </li>
+          </ol>
+
+          <div class="destaque-valores">
+            <p style="margin:0">Desses <strong>R$ 162,05</strong> que vão para credores:</p>
+            <ul style="margin-bottom:0">
+              <li><strong style="color:#e63946">R$ 126,35 (36,1%)</strong> → Juros para bancos</li>
+              <li><strong style="color:#ff758f">R$ 35,70 (10,2%)</strong> → Amortizações</li>
+            </ul>
+          </div>
+          
+          <p style="font-size:0.9em;color:#666">Fontes: Tesouro Nacional (2024), Auditoria Cidadã da Dívida</p>
+        </div>
+
+        <!-- Versão Técnica (oculta inicialmente) -->
+        <div id="versaoTecnicaMetodologia" style="display:none" class="versao-tecnica">
+          <h3 style="color:#333">Detalhes Técnicos</h3>
+          
+          <table>
+            <tr>
+              <th>Parâmetro</th>
+              <th style="text-align:right">Valor</th>
+              <th>Fonte</th>
+            </tr>
+            <tr>
+              <td>Alíquota média de tributos</td>
+              <td style="text-align:right">35%</td>
+              <td>IBRE/FGV (2023)</td>
+            </tr>
+            <tr>
+              <td>% do orçamento para dívida</td>
+              <td style="text-align:right">46.3%</td>
+              <td>Tesouro Nacional/SIAFI 2024</td>
+            </tr>
+            <tr>
+              <td style="padding-left:20px">→ Juros</td>
+              <td style="text-align:right">36.1%</td>
+              <td>Auditoria Cidadã</td>
+            </tr>
+            <tr>
+              <td style="padding-left:20px">→ Amortizações</td>
+              <td style="text-align:right">10.2%</td>
+              <td>Auditoria Cidadã</td>
+            </tr>
+          </table>
+
+          <h4 style="margin-top:20px">Limitações do cálculo:</h4>
+          <ul>
+            <li>Não inclui tributos indiretos de cadeias produtivas</li>
+            <li>Baseado em médias nacionais (varia por produto/serviço)</li>
+            <li>Dados referentes à dívida federal (exclui estados/municípios)</li>
+          </ul>
+        </div>
+
+        <!-- Botões -->
+        <div style="text-align:center;margin-top:25px">
+          <button onclick="gerarPlanilha()" style="background:#1976d2;color:#fff;padding:12px 20px;border-radius:8px;border:none;font-weight:600;cursor:pointer;margin-right:10px">
+            📊 Baixar planilha completa
+          </button>
+          <button onclick="alternarVersaoMetodologia()" style="background:#555;color:#fff;padding:12px 20px;border-radius:8px;border:none;font-weight:600;cursor:pointer" id="botaoAlternarMetodologia">
+            👓 Versão técnica
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Guia Rápido (novo) -->
+    <div id="modalGuiaRapido" class="modal">
+      <div>
+        <button onclick="fecharModalGuiaRapido()" style="position:absolute;top:10px;right:15px;background:none;border:none;font-size:1.5rem;color:#d32f2f">×</button>
+        
+        <h2 style="color:#d32f2f;margin-top:0">🔍 Como funciona a dívida pública?</h2>
+        <div id="versaoLeigaGuia">
+          <h3>Para o público leigo (simples, direta, com analogias)</h3>
+          <p><strong>Como funciona a dívida pública, segundo a Auditoria Cidadã da Dívida</strong></p>
+          <p>Você sabia que quase metade do dinheiro que o governo arrecada vai direto para pagar uma dívida que nunca acaba?</p>
+          <p>Segundo a Auditoria Cidadã da Dívida (ACD), a chamada "dívida pública" não foi feita para investir em saúde, educação ou infraestrutura. Na verdade, ela funciona como um sistema que transfere dinheiro público para os bancos e grandes investidores, sem retorno para a população.</p>
+          <p>Funciona mais ou menos assim:</p>
+          <ul>
+            <li>O governo pega dinheiro emprestado pagando juros altíssimos.</li>
+            <li>Depois, em vez de quitar a dívida, ele pega mais empréstimos para pagar os juros dos anteriores.</li>
+            <li>Com isso, a dívida só cresce, mesmo quando sobra dinheiro no orçamento.</li>
+          </ul>
+          <p>Enquanto isso, os serviços públicos pioram — porque a prioridade do governo é pagar os rentistas, não investir no povo.</p>
+          <p>A ACD chama isso de "Sistema da Dívida": um esquema que usa a dívida como desculpa para tirar dinheiro de quem trabalha e entregar para quem já é rico.</p>
+          <p><strong>E o pior: nunca fizeram uma auditoria para saber de onde vem essa dívida ou se ela é mesmo legítima.</strong></p>
+        </div>
+        <div id="versaoTecnicaGuia" style="display:none">
+          <h3>Para o público com familiaridade técnica (ativistas, economistas, jornalistas)</h3>
+          <p><strong>Como funciona a dívida pública na visão da Auditoria Cidadã da Dívida (ACD)</strong></p>
+          <p>A ACD sustenta que a dívida pública brasileira não cumpre sua função clássica de financiar políticas públicas. Ao contrário, ela se transformou em um instrumento de transferência permanente de recursos do orçamento público para o setor financeiro, sem contrapartida social.</p>
+          <p>Esse fenômeno é chamado de "Sistema da Dívida" e se sustenta por meio de:</p>
+          <ul>
+            <li>Emissão contínua de títulos da dívida para pagar juros e amortizações — ou seja, rolagem infinita da dívida.</li>
+            <li>Política monetária de juros altos (SELIC), que aumenta artificialmente o estoque da dívida interna.</li>
+            <li>Operações compromissadas que remuneram diariamente a sobra de caixa dos bancos com recursos públicos.</li>
+            <li>Swaps cambiais que garantem proteção a investidores estrangeiros contra variação do dólar, à custa do Tesouro Nacional.</li>
+          </ul>
+          <p>Mesmo quando o governo atinge superávit primário, a dívida continua crescendo. Isso indica que o problema não está nos gastos sociais, mas sim no modelo de endividamento adotado.</p>
+          <p><strong>A ACD defende uma auditoria integral e com participação social, como determina o artigo 26 do ADCT da Constituição, nunca efetivamente cumprido.</strong> O objetivo é identificar dívidas ilegítimas, desvincular o orçamento da lógica financeira e reorientar os recursos para os direitos sociais.</p>
+        </div>
+        <div style="text-align:center;margin-top:20px">
+          <button onclick="alternarVersaoGuia()" style="background:#1976d2;color:#fff;padding:10px 15px;border-radius:8px;border:none;font-weight:600" id="botaoAlternarGuia">👓 Versão técnica</button>
+        </div>
+      </div>
+    </div>    <!-- Script para gerar a planilha dinamicamente -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Dados de percentuais atualizados com mais categorias
+        const percentuais = {
+            divida: 0.463,     // 46.3%
+            juros: 0.361,      // 36.1%
+            amortizacoes: 0.102, // 10.2%
+            saude: 0.029,      // 2.9%
+            educacao: 0.024,   // 2.4%
+            previdencia: 0.195, // 19.5%
+            outros: 0.264       // 26.4%
+        };
+        
+        // Elementos DOM
+        const elements = {
+            consumo: document.getElementById('consumo'),
+            perfilConsumo: document.getElementById('perfil-consumo'),
+            calcularBtn: document.getElementById('calcular-btn'),
+            errorMessage: document.getElementById('error-message'),
+            resultsDiv: document.getElementById('results'),
+            valorAnualDP: document.getElementById('valorAnualDP')
+        };
+
+        // Configurar eventos
+        elements.calcularBtn.addEventListener('click', calcular);
+        elements.consumo.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calcular();
+            }
+        });
+
+        // Função para gerar a planilha Excel
+        function gerarPlanilha() {
+            const valorConsumo = parseFloat(elements.consumo.value) || 1000;
+            const tributosPercentual = parseFloat(elements.perfilConsumo.value) || 0.35;
+            
+            // Criar dados da planilha
+            const dados = [
+                ["CÁLCULO DETALHADO DA DÍVIDA PÚBLICA", "", "", "", "Fontes:"],
+                ["Parâmetro", "Valor", "Fórmula", "Resultado", "Tesouro Nacional (2024)"],
+                ["Consumo mensal", `R$ ${valorConsumo}`, "=B3", `R$ ${valorConsumo}`, "Auditoria Cidadã"],
+                ["Tributos sobre consumo", `${tributosPercentual*100}%`, "=B3*C4", `R$ ${valorConsumo * tributosPercentual}`, "IBRE/FGV"],
+                ["% para dívida pública", "46.3%", "=D4*0.463", `R$ ${valorConsumo * tributosPercentual * 0.463}`, "SIAFI/2024"],
+                ["→ Juros", "36.1%", "=D5*0.361", `R$ ${valorConsumo * tributosPercentual * 0.361}`, ""],
+                ["→ Amortizações", "10.2%", "=D5*0.102", `R$ ${valorConsumo * tributosPercentual * 0.102}`, ""],
+                ["", "", "", "", ""],
+                ["COMPARAÇÃO COM ORÇAMENTO FEDERAL", "", "", "", ""],
+                ["Dívida pública (2023)", "R$ 1.199 trilhão", "", "", "BCB/2024"],
+                ["Orçamento saúde (2023)", "R$ 198 bilhões", "", "", "Portal da Saúde"],
+                ["Proporção", "6.05x", "=B10/B11", "6.05x", ""]
+            ];
+
+            // Criar workbook
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(dados);
+            
+            // Formatar colunas
+            ws["!cols"] = [
+                {wch: 25}, {wch: 15}, 
+                {wch: 20}, {wch: 15},
+                {wch: 25}
+            ];
+            
+            XLSX.utils.book_append_sheet(wb, ws, "Cálculos");
+
+            // Gerar arquivo
+            XLSX.writeFile(wb, "Calculos_Divida_Publica.xlsx");
+        }
+
+        // Função principal de cálculo
+        function calcular() {
+            const valorConsumo = parseFloat(elements.consumo.value);
+            const tributosPercentual = parseFloat(elements.perfilConsumo.value);
+            
+            // Validação
+            if (isNaN(valorConsumo)) {
+                elements.errorMessage.textContent = "Por favor, digite um valor válido";
+                elements.errorMessage.style.display = 'block';
+                elements.consumo.focus();
+                return;
+            }
+            
+            if (valorConsumo <= 0) {
+                elements.errorMessage.textContent = "O valor deve ser maior que zero";
+                elements.errorMessage.style.display = 'block';
+                elements.consumo.focus();
+                return;
+            }
+            
+            elements.errorMessage.style.display = 'none';
+            
+            // Cálculos
+            const tributos = valorConsumo * tributosPercentual;
+            const valorMensalDP = tributos * percentuais.divida;
+            const valorAnualDP = valorMensalDP * 12;
+            
+            // Atualizar a interface
+            document.getElementById('servicos').textContent = `R$ ${(tributos * (percentuais.saude + percentuais.educacao)).toFixed(2)}`;
+            document.getElementById('saude').textContent = `R$ ${(tributos * percentuais.saude).toFixed(2)}`;
+            document.getElementById('educacao').textContent = `R$ ${(tributos * percentuais.educacao).toFixed(2)}`;
+            document.getElementById('credores').textContent = `R$ ${valorMensalDP.toFixed(2)}`;
+            document.getElementById('juros').textContent = `R$ ${(tributos * percentuais.juros).toFixed(2)}`;
+            document.getElementById('amortizacoes').textContent = `R$ ${(tributos * percentuais.amortizacoes).toFixed(2)}`;
+
+            // Atualizar valor anual com animação
+            animarContador(valorAnualDP);
+            
+            // Mostrar resultados e criar gráfico
+            elements.resultsDiv.style.display = 'block';
+            criarGrafico();
+            
+            // Rolagem suave para os resultados
+            elements.resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Animação do contador para o valor anual
+        function animarContador(valorAlvo) {
+            let contador = 0;
+            const incremento = valorAlvo / 100;
+            const elemento = elements.valorAnualDP;
+            
+            const animar = () => {
+                contador += incremento;
+                elemento.textContent = `R$ ${Math.floor(contador).toLocaleString('pt-BR')}`;
+                if (contador < valorAlvo) {
+                    requestAnimationFrame(animar);
+                } else {
+                    elemento.textContent = `R$ ${valorAlvo.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                }
+            };
+            animar();
+        }
+
+        // Função para criar o gráfico
+        function criarGrafico() {
+            const ctx = document.getElementById('chart').getContext('2d');
+            
+            // Destruir gráfico anterior se existir
+            if (window.myChart) {
+                window.myChart.destroy();
+            }
+            
+            window.myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: [
+                        `Juros da Dívida (${(percentuais.juros * 100).toFixed(1)}%)`,
+                        `Amortizações (${(percentuais.amortizacoes * 100).toFixed(1)}%)`,
+                        `Saúde (${(percentuais.saude * 100).toFixed(1)}%)`,
+                        `Educação (${(percentuais.educacao * 100).toFixed(1)}%)`,
+                        `Previdência (${(percentuais.previdencia * 100).toFixed(1)}%)`,
+                        `Outros (${(percentuais.outros * 100).toFixed(1)}%)`
+                    ],
+                    datasets: [{
+                        data: [
+                            percentuais.juros * 100,
+                            percentuais.amortizacoes * 100,
+                            percentuais.saude * 100,
+                            percentuais.educacao * 100,
+                            percentuais.previdencia * 100,
+                            percentuais.outros * 100
+                        ],
+                        backgroundColor: [
+                            '#e63946',
+                            '#ff758f',
+                            '#2a9d8f',
+                            '#457b9d',
+                            '#f4a261',
+                            '#ced4da'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 12,
+                                padding: 20,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}% do orçamento`;
+                                }
+                            }
+                        }
+                    },
+                    onClick: function(evt, elements) {
+                        if (elements.length > 0) {
+                            // Efeito visual ao clicar no gráfico
+                            const lock = document.querySelector('.chart-lock');
+                            lock.style.transform = 'scale(1.3)';
+                            setTimeout(() => {
+                                lock.style.transform = 'scale(1)';
+                            }, 300);
+                        }
+                    }
+                }
+            });
+        }
+
+        // Funções de compartilhamento
+        function compartilharWhatsApp() {
+            const texto = `Descobri que do meu consumo, ${document.getElementById('credores').textContent} vão para bancos credores! Veja você também:`;
+            const url = window.location.href;
+            window.open(`https://wa.me/?text=${encodeURIComponent(texto + ' ' + url)}`, '_blank');
+        }
+
+        function copiarLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Link copiado para a área de transferência!');
+            }).catch(err => {
+                console.error('Erro ao copiar:', err);
+                alert('Não foi possível copiar. Tente novamente.');
+            });
+        }
+
+        // Funções do Modal de Metodologia
+        function abrirMetodologia() {
+            document.getElementById('modalMetodologia').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            window.versaoAtualMetodologia = 'leiga';
+            document.getElementById('versaoLeigaMetodologia').style.display = 'block';
+            document.getElementById('versaoTecnicaMetodologia').style.display = 'none';
+            document.getElementById('botaoAlternarMetodologia').textContent = '👓 Versão técnica';
+        }
+        
+        function fecharModalMetodologia() {
+            document.getElementById('modalMetodologia').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        function alternarVersaoMetodologia() {
+            const leiga = document.getElementById('versaoLeigaMetodologia');
+            const tecnica = document.getElementById('versaoTecnicaMetodologia');
+            const botao = document.getElementById('botaoAlternarMetodologia');
+            
+            if (window.versaoAtualMetodologia === 'leiga') {
+                leiga.style.display = 'none';
+                tecnica.style.display = 'block';
+                botao.textContent = '👶 Versão simplificada';
+                window.versaoAtualMetodologia = 'tecnica';
+            } else {
+                leiga.style.display = 'block';
+                tecnica.style.display = 'none';
+                botao.textContent = '👓 Versão técnica';
+                window.versaoAtualMetodologia = 'leiga';
+            }
+        }
+
+        // Funções do Modal de Guia Rápido
+        function abrirGuiaRapido() {
+            document.getElementById('modalGuiaRapido').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            window.versaoAtualGuia = 'leiga';
+            document.getElementById('versaoLeigaGuia').style.display = 'block';
+            document.getElementById('versaoTecnicaGuia').style.display = 'none';
+            document.getElementById('botaoAlternarGuia').textContent = '👓 Versão técnica';
+        }
+        
+        function fecharModalGuiaRapido() {
+            document.getElementById('modalGuiaRapido').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        function alternarVersaoGuia() {
+            const leiga = document.getElementById('versaoLeigaGuia');
+            const tecnica = document.getElementById('versaoTecnicaGuia');
+            const botao = document.getElementById('botaoAlternarGuia');
+            
+            if (window.versaoAtualGuia === 'leiga') {
+                leiga.style.display = 'none';
+                tecnica.style.display = 'block';
+                botao.textContent = '👶 Versão simplificada';
+                window.versaoAtualGuia = 'tecnica';
+            } else {
+                leiga.style.display = 'block';
+                tecnica.style.display = 'none';
+                botao.textContent = '👓 Versão técnica';
+                window.versaoAtualGuia = 'leiga';
+            }
+        }
+
+        // Funções para navegação
+        function abrirCalculadora() {
+            document.getElementById('pagina-principal').style.display = 'block';
+            document.getElementById('pagina-sobre').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        function abrirSobre() {
+            document.getElementById('pagina-principal').style.display = 'none';
+            document.getElementById('pagina-sobre').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function compartilhar() {
+            const texto = "Descubra quanto do seu dinheiro vai para bancos credores com a dívida pública não auditada. #AuditoriaJá";
+            const url = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'NÃO É SEU - Calculadora da Dívida Pública',
+                    text: texto,
+                    url: url
+                }).catch(err => {
+                    console.log('Erro ao compartilhar:', err);
+                    window.open(`https://wa.me/?text=${encodeURIComponent(texto + ' ' + url)}`, '_blank');
+                });
+            } else {
+                window.open(`https://wa.me/?text=${encodeURIComponent(texto + ' ' + url)}`, '_blank');
+            }
+        }
+
+        // Fechar modais ao clicar fora do conteúdo
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    if (this.id === 'modalMetodologia') {
+                        fecharModalMetodologia();
+                    } else if (this.id === 'modalGuiaRapido') {
+                        fecharModalGuiaRapido();
+                    } else if (this.id === 'modalEngajamento') {
+                        fecharModalEngajamento();
+                    } else if (this.id === 'modalOrigemLeiga') {
+                        fecharModalOrigemLeiga();
+                    } else if (this.id === 'modalOrigemTecnica') {
+                        fecharModalOrigemTecnica();
+                    } else if (this.id === 'modalContato') {
+                        fecharModalContato();
+                    }
+                }
+            });
+        });
+
+        // Fechar modais com tecla ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (document.getElementById('modalMetodologia').style.display === 'block') {
+                    fecharModalMetodologia();
+                } else if (document.getElementById('modalGuiaRapido').style.display === 'block') {
+                    fecharModalGuiaRapido();
+                } else if (document.getElementById('modalEngajamento').style.display === 'block') {
+                    fecharModalEngajamento();
+                } else if (document.getElementById('modalOrigemLeiga').style.display === 'block') {
+                    fecharModalOrigemLeiga();
+                } else if (document.getElementById('modalOrigemTecnica').style.display === 'block') {
+                    fecharModalOrigemTecnica();
+                } else if (document.getElementById('modalContato').style.display === 'block') {
+                    fecharModalContato();
+                }
+            }
+        });
+
+        // Mostrar modal de contexto após 15 segundos
+        setTimeout(() => {
+            if (!localStorage.getItem('modalContextoVisto')) {
+                abrirGuiaRapido();
+                localStorage.setItem('modalContextoVisto', 'true');
+            }
+        }, 15000);
+    
+/* =============================================
+   CONFIGURAÇÃO DE FECHAMENTO DE MODAIS
+   ============================================= */
+
+// Função genérica para configurar fechamento
+function configurarFechamentoModal(modalId, fecharFuncao) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            fecharFuncao();
+        }
+    });
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.style.display === 'block') {
+            fecharFuncao();
+        }
+    });
+}
+
+// Configurar cada modal quando o DOM estiver pronto
+window.addEventListener('DOMContentLoaded', function() {
+    configurarFechamentoModal('modalOrigemLeiga', fecharModalOrigemLeiga);
+    configurarFechamentoModal('modalOrigemTecnica', fecharModalOrigemTecnica);
+    configurarFechamentoModal('modalEngajamento', fecharModalEngajamento);
+    configurarFechamentoModal('modalContato', fecharModalContato);
+});
+
+// Funções do Modal de Contato
+function abrirModalContato() {
+    document.getElementById('modalContato').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    document.getElementById('formContato').style.display = 'grid';
+    document.getElementById('contatoSucesso').style.display = 'none';
+    document.getElementById('formContato').reset();
+}
+  
+function fecharModalContato() {
+    document.getElementById('modalContato').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Processar formulário de contato
+document.getElementById('formContato').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Simular envio (em produção, substituir por AJAX/API)
+    setTimeout(function() {
+        document.getElementById('formContato').style.display = 'none';
+        document.getElementById('contatoSucesso').style.display = 'block';
+        
+        // Resetar após 3 segundos
+        setTimeout(function() {
+            document.getElementById('formContato').reset();
+            document.getElementById('formContato').style.display = 'grid';
+            document.getElementById('contatoSucesso').style.display = 'none';
+        }, 3000);
+    }, 1000);
+});
+
+</script>
+
+<!-- MODAL DE ENGAJAMENTO ADICIONADO -->
+<div id="modalEngajamento" class="modal">
+  <div>
+    <button onclick="fecharModalEngajamento()" style="position:absolute;top:10px;right:15px;background:none;border:none;font-size:1.5rem;color:#d32f2f">×</button>
+
+    <h2 style="color:#d32f2f;margin-top:0">✋ CHEGA! Hora de virar o jogo.</h2>
+    <p style="font-size:1.1rem;line-height:1.7">
+      <strong>A grande mídia não fala sobre isso — porque protege os mesmos grupos que lucram com essa dívida.</strong>
+      <br><br>
+      Enquanto bilhões vão para rentistas, a TV se cala, os jornais omitem e os analistas fingem que é técnico demais para você entender.
+      <br><br>
+      Mas não é. <strong>Você entendeu.</strong> E agora, é sua vez de passar isso adiante.
+    </p>
+
+    <div class="alert-impacto" style="margin: 30px 0;">
+      <img src="data:image/svg+xml;base64,..." alt="megafone">
+      <p>
+        📢 <strong>Nosso maior inimigo é o desconhecimento.</strong><br>
+        Se milhões de brasileiros souberem disso, não dá mais pra esconder.
+      </p>
+    </div>
+
+    <h3 style="margin-top:30px">💥 O que você pode fazer agora:</h3>
+    <ul style="padding-left:20px;font-size:1.05rem;line-height:1.8">
+      <li>📱 Compartilhe esta calculadora com seus grupos e contatos.</li>
+      <li>📸 Poste seu cálculo nas redes sociais.</li>
+      <li>🤝 Apoie a Auditoria Cidadã da Dívida.</li>
+      <li>🗣️ Exija de deputados e vereadores que cobrem uma auditoria.</li>
+    </ul>
+
+    <div style="background:#f1f1f1;padding:15px;border-radius:10px;margin-top:25px;text-align:center">
+      <p style="margin:0;font-style:italic;font-size:1.05rem">Essa dívida só se sustenta porque é invisível.<br><strong>Torne-a visível. Faça barulho.</strong></p>
+    </div>
+
+    <div style="text-align:center;margin-top:25px">
+      <button onclick="compartilharWhatsApp()" class="share-btn" style="margin:10px auto;font-size:1rem">📱 Compartilhar no WhatsApp</button>
+      <button onclick="copiarLink()" class="copy-btn" style="margin:10px auto;font-size:1rem">🔗 Copiar link da ferramenta</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAIS DE ORIGEM DA DÍVIDA -->
+
+<div id="modalOrigemLeiga" class="modal">
+  <div>
+    <button onclick="fecharModalOrigemLeiga()" style="position:absolute;top:10px;right:15px;background:none;border:none;font-size:1.5rem;color:#d32f2f">×</button>
+    <h2 style="color:#d32f2f;margin-top:0">👤 Como tudo começou (versão simples)</h2>
+    <p style="font-size:1.1rem;line-height:1.6">
+      📉 Isso começou com a chamada <strong>“crise da dívida” nos anos 80</strong>.<br><br>
+      Os bancos internacionais emprestaram bilhões para o Brasil com juros baixos. Mas quando os EUA subiram os juros em 1982, a dívida explodiu.<br><br>
+      Em vez de investigar, o governo fez acordos com o FMI e passou a usar nosso dinheiro para pagar juros — sem auditoria.<br><br>
+      A Constituição de 1988 até previu uma auditoria da dívida, mas <strong>ela nunca foi feita.</strong><br><br>
+      Desde então, essa dívida virou um buraco sem fundo. E você paga por isso todos os meses — mesmo sem saber.
+    </p>
+  </div>
+</div>
+
+<div id="modalOrigemTecnica" class="modal">
+  <div>
+    <button onclick="fecharModalOrigemTecnica()" style="position:absolute;top:10px;right:15px;background:none;border:none;font-size:1.5rem;color:#d32f2f">×</button>
+    <h2 style="color:#d32f2f;margin-top:0">🧾 Como tudo começou (versão técnica)</h2>
+    <p style="font-size:1.05rem;line-height:1.6">
+      A atual fase da dívida pública brasileira remonta ao processo de endividamento externo durante a ditadura militar (anos 70), com empréstimos internacionais em larga escala.<br><br>
+      Em 1982, o aumento abrupto dos juros internacionais levou à chamada <strong>crise da dívida</strong>. Em vez de revisar contratos, o Brasil fez acordos com o FMI que condicionavam políticas internas.<br><br>
+      A Constituição de 1988, em seu Art. 26 do ADCT, determinou a realização de uma auditoria dessa dívida, mas ela <strong>nunca foi cumprida</strong>.<br><br>
+      Desde então, a dívida pública interna tem crescido com base em mecanismos financeiros que transferem recursos ao setor financeiro — sem contrapartida real ao povo.
+    </p>
+    <p style="margin-top:25px">
+      🔗 Fonte: Auditoria Cidadã da Dívida. Materiais sobre dívida pública. Disponível sob demanda em: <a href="mailto:contato@auditoriacidada.org.br" target="_blank" rel="noopener noreferrer">contato@auditoriacidada.org.br</a>
+    </p>
+  </div>
+</div>
+
+<script>
+  function abrirModalOrigemLeiga() {
+    document.getElementById('modalOrigemLeiga').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+  function fecharModalOrigemLeiga() {
+    document.getElementById('modalOrigemLeiga').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+  function abrirModalOrigemTecnica() {
+    document.getElementById('modalOrigemTecnica').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+  function fecharModalOrigemTecnica() {
+    document.getElementById('modalOrigemTecnica').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+
+  function abrirModalEngajamento() {
+    document.getElementById('modalEngajamento').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+  
+  function fecharModalEngajamento() {
+    document.getElementById('modalEngajamento').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+</script>
+
+</body>
+</html>
