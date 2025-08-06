@@ -1,0 +1,3 @@
+[build]
+  functions = "."  # Procura funções na raiz
+  publish = "."
