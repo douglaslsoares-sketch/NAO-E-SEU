@@ -1,58 +1,1153 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loja de E-commerce</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NÃO É SEU | Camisetas-Dossiê</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='20' y='45' width='60' height='30' rx='5' fill='%23d32f2f'/><circle cx='50' cy='30' r='20' fill='%23d32f2f'/><text x='50' y='38' font-family='Arial' font-size='30' font-weight='bold' text-anchor='middle' fill='white'>$</text></svg>">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Barlow Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            margin: 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .logo {
+            text-align: center;
+            margin: 15px 0 25px;
+            position: relative;
+        }
+
+        .logo h1 {
+            font-size: 3rem;
+            color: #d32f2f;
+            margin: 0;
+            letter-spacing: -1px;
+            line-height: 1;
+            font-weight: 800;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .lock-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+
+        .lock-icon::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #d32f2f;
+            border: 3px solid #d32f2f;
+        }
+
+        .lock-icon::after {
+            content: "$";
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .sub-logo {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* Nav */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #d32f2f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        /* Produtos */
+        .produto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .produto-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .produto-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .produto-imagem {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .produto-info {
+            padding: 15px;
+        }
+        
+        .produto-titulo {
+            font-size: 1.3rem;
+            margin: 0 0 10px;
+            color: #d32f2f;
+            font-weight: 700;
+        }
+        
+        .produto-descricao {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .produto-variantes {
+            margin: 15px 0;
+        }
+        
+        .variante-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .variante-select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        
+        .produto-preco {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #333;
+            margin: 15px 0;
+        }
+        
+        .produto-botao {
+            width: 100%;
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .3s ease;
+        }
+        
+        .produto-botao:hover {
+            background-color: #b71c1c;
+        }
+        
+        /* Carrinho */
+        .carrinho-container {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .carrinho-container.aberto {
+            right: 0;
+        }
+        
+        .carrinho-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .carrinho-titulo {
+            font-size: 1.5rem;
+            margin: 0;
+            color: #d32f2f;
+        }
+        
+        .fechar-carrinho {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .carrinho-itens {
+            padding: 20px;
+        }
+        
+        .carrinho-item {
+            display: flex;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .carrinho-item-imagem {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+        
+        .carrinho-item-info {
+            flex: 1;
+        }
+        
+        .carrinho-item-titulo {
+            font-size: 1rem;
+            margin: 0 0 5px;
+        }
+        
+        .carrinho-item-variante {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 5px 0;
+        }
+        
+        .carrinho-item-preco {
+            font-weight: 700;
+            margin: 5px 0;
+        }
+        
+        .carrinho-item-quantidade {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .quantidade-btn {
+            background: #eee;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        
+        .quantidade-valor {
+            margin: 0 10px;
+        }
+        
+        .remover-item {
+            background: none;
+            border: none;
+            color: #d32f2f;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .carrinho-total {
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .total-linha {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .total-final {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #d32f2f;
+        }
+        
+        .finalizar-compra {
+            width: 100%;
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .carrinho-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        .carrinho-overlay.ativo {
+            display: block;
+        }
+        
+        /* Ícone do carrinho */
+        .carrinho-icone {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #d32f2f;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        
+        .carrinho-contador {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #fff;
+            color: #d32f2f;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 2px solid #d32f2f;
+        }
+        
+        /* Checkout */
+        .checkout-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .checkout-titulo {
+            color: #d32f2f;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .checkout-etapa {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .etapa-titulo {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .etapa-titulo span {
+            background: #d32f2f;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .pix-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        
+        .pix-titulo {
+            color: #32bcad;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        .pix-qrcode {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .pix-codigo {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            word-break: break-all;
+            margin-bottom: 20px;
+        }
+        
+        .pix-instrucoes {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .checkout-botao {
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+        
+        /* Banner */
+        .banner {
+            background: #d32f2f;
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .banner-titulo {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .banner-texto {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        /* Confirmação */
+        .confirmacao-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .confirmacao-icon {
+            font-size: 4rem;
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+        
+        .confirmacao-titulo {
+            color: #d32f2f;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .confirmacao-texto {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .confirmacao-detalhes {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .confirmacao-botao {
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        /* Rastreio */
+        .rastreio-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .rastreio-titulo {
+            color: #d32f2f;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .rastreio-status {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .status-item.ativo .status-icon {
+            background-color: #d32f2f;
+            color: white;
+        }
+        
+        .status-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .status-info {
+            flex: 1;
+        }
+        
+        .status-data {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Dashboard Admin */
+        .admin-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .admin-titulo {
+            color: #d32f2f;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-valor {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #d32f2f;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .admin-pedidos {
+            overflow-x: auto;
+        }
+        
+        .pedidos-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .pedidos-table th {
+            background: #d32f2f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .pedidos-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .pedidos-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-pago {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-producao {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+        
+        .status-enviado {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .status-entregue {
+            background-color: #f5f5f5;
+            color: #424242;
+        }
+        
+        /* Compartilhar Calculadora */
+        .share-container {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .share-titulo {
+            color: #2e7d32;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        .share-botoes {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .share-btn {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+        
+        .share-btn.whatsapp {
+            background: #25D366;
+        }
+        
+        .share-btn.facebook {
+            background: #1877F2;
+        }
+        
+        .share-btn.twitter {
+            background: #1DA1F2;
+        }
+        
+        .share-btn.link {
+            background: #1976d2;
+        }
+        
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .produto-grid {
+                grid-template-columns: 1fr;
+            }
+            .carrinho-container {
+                width: 100%;
+                max-width: none;
+            }
+            .nav-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .nav-links {
+                margin-top: 15px;
+            }
+            .checkout-container, .confirmacao-container, .rastreio-container, .admin-container {
+                padding: 20px;
+            }
+            .share-botoes {
+                flex-direction: column;
+                align-items: center;
+            }
+            .share-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        /* Melhorias mobile */
+        /* Garante espaçamento lateral no carrinho em telas pequenas */
+        @media (max-width: 768px) {
+            .carrinho-container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+        /* Ajuste de tamanho e posição do ícone do carrinho no mobile */
+        @media (max-width: 480px) {
+            .carrinho-icone {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            .carrinho-contador {
+                width: 20px;
+                height: 20px;
+                font-size: 0.7rem;
+                top: -4px;
+                right: -4px;
+            }
+        }
+        /* Garante botão fixo visível se necessário */
+        .produto-botao {
+            scroll-margin-bottom: 100px;
+        }
+    </style>
 </head>
 <body>
+    <div class="nav-container">
+        <div class="logo">
+            <h1> NÃO É SEU <div class="lock-icon"></div> </h1>
+            <p class="sub-logo">Seu dinheiro está trancado. Descubra quem tem a chave.</p>
+        </div>
+        <div class="nav-links">
+            <a href="/ferramenta">Calculadora</a>
+            <a href="rastreio.html">Rastrear Pedido</a>
+            <a href="admin.html" style="display: none;">Admin</a>
+        </div>
+    </div>
+    <div class="banner">
+        <div class="banner-content" style="max-width: 1200px; margin: 0 auto;">
+            <h2 class="banner-titulo" style="font-size: 2.5rem; margin-bottom: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">Leve a calculadora para as ruas!</h2>
+            <p class="banner-texto" style="font-size: 1.4rem; margin-bottom: 25px; font-weight: 600;">
+                Camisetas com QR Code que revelam quem lucra com seu consumo →
+            </p>
+            <button class="banner-botao" onclick="document.querySelector('.produto-grid').scrollIntoView({behavior: 'smooth'})" style="background: white; color: #d32f2f; border: none; padding: 12px 30px; font-size: 1.1rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                VER CAMISETAS
+            </button>
+        </div>
+    </div>
+    <div class="share-container">
+        <h3 class="share-titulo">📢 COMPARTILHE A CALCULADORA</h3>
+        <p>Ajude mais pessoas a descobrirem quanto do seu dinheiro vai para a dívida pública</p>
+        <div class="share-botoes">
+            <button class="share-btn whatsapp" onclick="compartilharWhatsApp()">
+                <span>📱</span> WhatsApp
+            </button>
+            <button class="share-btn facebook" onclick="compartilharFacebook()">
+                <span>👍</span> Facebook
+            </button>
+            <button class="share-btn twitter" onclick="compartilharTwitter()">
+                <span>🐦</span> Twitter
+            </button>
+            <button class="share-btn link" onclick="copiarLink()">
+                <span>🔗</span> Copiar Link
+            </button>
+        </div>
+    </div>
+    <div class="produto-intro" style="text-align: center; margin: 50px auto; padding: 0 15px; max-width: 800px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 25px;">
+            <img src="https://via.placeholder.com/500x300/f5f5f5/d32f2f?text=Mockup+de+pessoa+escaneando+QR+Code" alt="Como funciona" style="width: 100%; max-width: 500px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <div>
+                <h3 style="font-size: 1.5rem; color: #d32f2f; margin-bottom: 15px; font-weight: 700;">
+                    Todas as camisetas incluem um QR Code permanente nas costas
+                </h3>
+                <p style="font-size: 1.1rem; color: #333; line-height: 1.6;">
+                    Aponte a câmera do celular e descubra em tempo real quanto do seu consumo vira dívida pública!<br>
+                    <span style="font-weight: 600; color: #d32f2f;">Vista sua indignação e espalhe essa informação.</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="produto-grid">
+        </div>
+    
+    <div class="carrinho-overlay" id="carrinhoOverlay"></div>
+    <div class="carrinho-container" id="carrinhoContainer">
+        <div class="carrinho-header">
+            <h3 class="carrinho-titulo">SEU CARRINHO</h3>
+            <button class="fechar-carrinho" onclick="fecharCarrinho()">×</button>
+        </div>
+        <div class="carrinho-itens" id="carrinhoItens">
+            <p style="text-align: center; padding: 20px;">Seu carrinho está vazio</p>
+        </div>
+        <div class="carrinho-total">
+            <div class="total-linha">
+                <span>Subtotal:</span>
+                <span id="subtotal">R$ 0,00</span>
+            </div>
+            <div class="total-linha">
+                <span>Frete:</span>
+                <span id="frete">Grátis</span>
+            </div>
+            <div class="total-linha total-final">
+                <span>Total:</span>
+                <span id="total">R$ 0,00</span>
+            </div>
+            <button class="finalizar-compra" onclick="finalizarCompra()">
+                FINALIZAR COMPRA
+            </button>
+        </div>
+    </div>
+    <div class="carrinho-icone" onclick="abrirCarrinho()">
+        🛒
+        <span class="carrinho-contador" id="carrinhoContador">0</span>
+    </div>
+    
+    <div class="confirmacao-container" style="display: none;">
+        <div class="confirmacao-icon">✅</div>
+        <h2 class="confirmacao-titulo">Pedido Confirmado!</h2>
+        <p class="confirmacao-texto">
+            Obrigado por sua compra! Você receberá um e-mail em breve com os detalhes do pedido e rastreio.
+        </p>
+        <div class="confirmacao-detalhes">
+            <p><strong>Número do Pedido:</strong> #123456</p>
+            <p><strong>Total:</strong> R$ 99,90</p>
+        </div>
+        <button class="confirmacao-botao">Acompanhar Pedido</button>
+    </div>
+    
+    <div class="rastreio-container" style="display: none;">
+        <h2 class="rastreio-titulo">Rastrear Pedido #123456</h2>
+        <div class="rastreio-status">
+            <div class="status-item ativo">
+                <div class="status-icon">1</div>
+                <div class="status-info">
+                    <strong>Pagamento Confirmado</strong>
+                    <span class="status-data">25 de Outubro, 10:00</span>
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon">2</div>
+                <div class="status-info">
+                    <strong>Em Produção</strong>
+                    <span class="status-data">25 de Outubro, 14:30</span>
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon">3</div>
+                <div class="status-info">
+                    <strong>Enviado</strong>
+                    <span class="status-data">26 de Outubro, 11:00</span>
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon">4</div>
+                <div class="status-info">
+                    <strong>Entregue</strong>
+                    <span class="status-data">28 de Outubro, 09:00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="admin-container" style="display: none;">
+        <h2 class="admin-titulo">Dashboard Admin</h2>
+        <div class="admin-stats">
+            <div class="stat-card">
+                <p class="stat-label">Total de Vendas</p>
+                <p class="stat-valor">R$ 5.480,00</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Pedidos Pendentes</p>
+                <p class="stat-valor">12</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Produtos em Estoque</p>
+                <p class="stat-valor">150</p>
+            </div>
+        </div>
+        <div class="admin-pedidos">
+            <table class="pedidos-table">
+                <thead>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Cliente</th>
+                        <th>Data</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#123456</td>
+                        <td>Ana Silva</td>
+                        <td>25/10/2024</td>
+                        <td><span class="status-badge status-pago">Pago</span></td>
+                    </tr>
+                    <tr>
+                        <td>#123457</td>
+                        <td>João Santos</td>
+                        <td>25/10/2024</td>
+                        <td><span class="status-badge status-producao">Em Produção</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        // O restante do código JavaScript foi mantido, pois não era estático.
+        let cart = [];
 
-<header>
-  <nav>
-    <a href="#" class="logo">Minha Loja</a>
-    <div class="cart-icon">
-      🛒 <span id="cart-count">0</span>
-    </div>
-  </nav>
-</header>
+        // Funções de compartilhamento
+        function compartilharWhatsApp() {
+            window.open('https://api.whatsapp.com/send?text=Calcule quanto da sua grana vira dívida pública com a ferramenta do site NÃO É SEU! https://naoeseu.org/ferramenta', '_blank');
+        }
 
-<main class="container">
-  <section class="product-list" id="product-list">
-      </section>
-</main>
+        function compartilharFacebook() {
+            window.open('https://www.facebook.com/sharer/sharer.php?u=https://naoeseu.org/ferramenta', '_blank');
+        }
 
-<footer>
-  <p>&copy; 2024 Minha Loja. Todos os direitos reservados.</p>
-</footer>
+        function compartilharTwitter() {
+            window.open('https://twitter.com/intent/tweet?text=Calcule quanto da sua grana vira dívida pública com a ferramenta do site NÃO É SEU!&url=https://naoeseu.org/ferramenta', '_blank');
+        }
 
-<script>
-  let cart = [];
+        function copiarLink() {
+            navigator.clipboard.writeText('https://naoeseu.org/ferramenta');
+            alert('Link copiado para a área de transferência!');
+        }
 
-  // Função para atualizar o contador do carrinho no cabeçalho
-  function updateCartCount() {
-    document.getElementById('cart-count').textContent = cart.length;
-  }
+        // Funções do Carrinho
+        function updateCartCount() {
+            const cartCountElement = document.getElementById('carrinhoContador');
+            if (cartCountElement) {
+                cartCountElement.textContent = cart.reduce((total, item) => total + item.quantidade, 0);
+            }
+        }
+        
+        function abrirCarrinho() {
+            document.getElementById('carrinhoContainer').classList.add('aberto');
+            document.getElementById('carrinhoOverlay').classList.add('ativo');
+        }
 
-  // Função para adicionar um produto ao carrinho
-  function addToCart(product) {
-    cart.push(product);
-    updateCartCount();
-    alert(`${product.name} foi adicionado ao carrinho!`);
-  }
+        function fecharCarrinho() {
+            document.getElementById('carrinhoContainer').classList.remove('aberto');
+            document.getElementById('carrinhoOverlay').classList.remove('ativo');
+        }
 
-  // Funções para carregar produtos do banco de dados virão aqui
-  // e substituirão a renderização de produtos estáticos.
+        function adicionarAoCarrinho(id, event) {
+            event.stopPropagation();
+            const produtoSelecionado = produtos.find(p => p.id === id);
+            
+            const tamanho = document.getElementById(`tamanho-${id}`).value;
+            const cor = document.getElementById(`cor-${id}`).value;
+            
+            const itemExistente = cart.find(item => item.id === id && item.variante.tamanho === tamanho && item.variante.cor === cor);
 
-  // Exemplo de como carregar produtos dinamicamente:
-  // async function fetchProducts() {
-  //   const response = await fetch('/.netlify/functions/get-products');
-  //   const products = await response.json();
-  //   renderProducts(products);
-  // }
+            if (itemExistente) {
+                itemExistente.quantidade += 1;
+            } else {
+                cart.push({
+                    ...produtoSelecionado,
+                    quantidade: 1,
+                    variante: { tamanho, cor }
+                });
+            }
 
-  // fetchProducts();
-</script>
+            renderizarCarrinho();
+            updateCartCount();
+        }
+        
+        function removerDoCarrinho(index) {
+            cart.splice(index, 1);
+            renderizarCarrinho();
+            updateCartCount();
+        }
 
+        function aumentarQuantidade(index) {
+            cart[index].quantidade += 1;
+            renderizarCarrinho();
+        }
+
+        function diminuirQuantidade(index) {
+            if (cart[index].quantidade > 1) {
+                cart[index].quantidade -= 1;
+            } else {
+                removerDoCarrinho(index);
+            }
+            renderizarCarrinho();
+        }
+
+        function renderizarCarrinho() {
+            const carrinhoItens = document.getElementById('carrinhoItens');
+            carrinhoItens.innerHTML = '';
+            
+            if (cart.length === 0) {
+                carrinhoItens.innerHTML = '<p style="text-align: center; padding: 20px;">Seu carrinho está vazio</p>';
+                document.getElementById('subtotal').textContent = 'R$ 0,00';
+                document.getElementById('total').textContent = 'R$ 0,00';
+                return;
+            }
+            
+            let subtotal = 0;
+            
+            cart.forEach((item, index) => {
+                subtotal += item.preco * item.quantidade;
+                const itemHTML = `
+                    <div class="carrinho-item">
+                        <img src="${item.imagem}" alt="${item.nome}" class="carrinho-item-imagem">
+                        <div class="carrinho-item-info">
+                            <h4 class="carrinho-item-titulo">${item.nome}</h4>
+                            <p class="carrinho-item-variante">Tamanho: ${item.variante.tamanho}, Cor: ${item.variante.cor}</p>
+                            <p class="carrinho-item-preco">R$ ${(item.preco * item.quantidade).toFixed(2).replace('.', ',')}</p>
+                            <div class="carrinho-item-quantidade">
+                                <button class="quantidade-btn" onclick="diminuirQuantidade(${index})">-</button>
+                                <span class="quantidade-valor">${item.quantidade}</span>
+                                <button class="quantidade-btn" onclick="aumentarQuantidade(${index})">+</button>
+                            </div>
+                            <button class="remover-item" onclick="removerDoCarrinho(${index})">Remover</button>
+                        </div>
+                    </div>
+                `;
+                carrinhoItens.innerHTML += itemHTML;
+            });
+
+            document.getElementById('subtotal').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('total').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+            updateCartCount();
+        }
+        
+        // Finalizar Compra
+        function finalizarCompra() {
+            alert('Funcionalidade de checkout ainda não implementada.');
+            // Aqui você faria uma chamada para a sua função do Netlify
+            // fetch('/.netlify/functions/checkout', {
+            //     method: 'POST',
+            //     body: JSON.stringify({ cart })
+            // }).then(response => response.json()).then(data => {
+            //     console.log('Sucesso:', data);
+            // }).catch((error) => {
+            //     console.error('Erro:', error);
+            // });
+        }
+        
+        // Chamada inicial para carregar os produtos ao carregar a página
+        // renderizarProdutos(); // Esta função foi removida pois os produtos serão carregados do banco de dados
+
+    </script>
 </body>
 </html>
