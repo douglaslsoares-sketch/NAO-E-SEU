@@ -1,3 +1,7 @@
 [build]
-  functions = "."  # Procura funções na raiz
-  publish = "."
+    functions = "functions"
+
+[[redirects]]
+    from = "/.netlify/functions/*"
+    to = "/.netlify/functions/:splat"
+    status = 200
