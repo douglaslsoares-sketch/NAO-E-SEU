@@ -1,0 +1,24 @@
+{
+  "name": "nao-e-seu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "carrinho.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/douglaslsoares-sketch/NAO-E-SEU.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/douglaslsoares-sketch/NAO-E-SEU/issues"
+  },
+  "homepage": "https://github.com/douglaslsoares-sketch/NAO-E-SEU#readme",
+  "dependencies": {
+    "pg": "^8.16.3"
+  }
+}
